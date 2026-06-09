@@ -485,7 +485,7 @@
                 <p class="text-xs font-bold tracking-[0.4em] text-neutral-400 uppercase">Process & Archive</p>
                 <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">아이디어 아카이브</h2>
                 <p class="text-xs md:text-sm text-arch-500 dark:text-arch-400 font-light max-w-xl">
-                    도면의 이면에 있는 무수한 스케치, 모형 제작, 3D 렌더링 과정 등 공간의 완성에 이르는 날것 그대로의 생각의 흔적들을 공유합니다.
+                    도면의 이면에 있는 무수한 스케치, 모형 제작, 3D 렌더링 과정 등 공간의 완성에 이르는 날것 그대로 of 생각의 흔적들을 공유합니다.
                 </p>
             </div>
 
@@ -545,55 +545,38 @@
             </div>
         </section>
 
-        <!-- GUESTBOOK SECTION -->
+        <!-- GUESTBOOK SECTION (Padlet Integration) -->
         <section id="guestbook" class="py-24 bg-white dark:bg-arch-950/40 border-t border-b border-arch-100 dark:border-arch-800">
             <div class="max-w-7xl mx-auto px-6">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                    
-                    <!-- Guestbook Info & Form Left -->
-                    <div class="lg:col-span-5 space-y-6">
-                        <p class="text-xs font-bold tracking-[0.4em] text-neutral-400 uppercase">Guestbook</p>
-                        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">방명록</h2>
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+                    <div class="space-y-4">
+                        <p class="text-xs font-bold tracking-[0.4em] text-neutral-400 uppercase">Interactive Guestbook</p>
+                        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">실시간 패들렛 방명록</h2>
                         <div class="h-1 w-12 bg-arch-900 dark:bg-white"></div>
-                        <p class="text-sm text-arch-500 dark:text-arch-400 leading-relaxed font-light">
-                            작업실을 방문해 주셔서 감사합니다. 공간이나 설계에 관한 생각, 남기고 싶으신 안부 인사를 자유롭게 적어주세요.
+                        <p class="text-sm text-arch-500 dark:text-arch-400 font-light max-w-2xl leading-relaxed">
+                            방문해주신 소중한 발걸음을 기록해주세요. Padlet 서비스를 통해 텍스트뿐만 아니라 스케치, 이미지, 링크 등 영감이 가득한 다양한 형태의 피드백과 안부를 즉시 남겨보실 수 있습니다.
                         </p>
-
-                        <!-- Guestbook Form -->
-                        <form id="guestbook-form" onsubmit="handleGuestbookSubmit(event)" class="space-y-4 pt-4">
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="space-y-1">
-                                    <label for="gb-name" class="text-[10px] font-bold tracking-widest text-neutral-400 uppercase">작성자 *</label>
-                                    <input type="text" id="gb-name" required class="w-full bg-arch-50 dark:bg-arch-900 border border-arch-200 dark:border-arch-800 focus:border-arch-900 dark:focus:border-white p-3 text-xs transition-all outline-none rounded-sm" placeholder="이름">
-                                </div>
-                                <div class="space-y-1">
-                                    <label for="gb-password" class="text-[10px] font-bold tracking-widest text-neutral-400 uppercase">비밀번호 *</label>
-                                    <input type="password" id="gb-password" required class="w-full bg-arch-50 dark:bg-arch-900 border border-arch-200 dark:border-arch-800 focus:border-arch-900 dark:focus:border-white p-3 text-xs transition-all outline-none rounded-sm" placeholder="••••">
-                                </div>
-                            </div>
-                            <div class="space-y-1">
-                                <label for="gb-message" class="text-[10px] font-bold tracking-widest text-neutral-400 uppercase">메시지 *</label>
-                                <textarea id="gb-message" required rows="3" class="w-full bg-arch-50 dark:bg-arch-900 border border-arch-200 dark:border-arch-800 focus:border-arch-900 dark:focus:border-white p-3 text-xs transition-all outline-none rounded-sm resize-none" placeholder="내용을 입력해주세요."></textarea>
-                            </div>
-                            <button type="submit" class="w-full py-3 bg-arch-900 text-white dark:bg-white dark:text-arch-900 text-xs font-bold tracking-widest uppercase transition-all hover:bg-neutral-800 dark:hover:bg-neutral-100 rounded-sm">
-                                WRITE MESSAGE
-                            </button>
-                        </form>
                     </div>
-
-                    <!-- Guestbook Entries Right -->
-                    <div class="lg:col-span-7 space-y-6">
-                        <div class="flex items-center justify-between border-b border-arch-100 dark:border-arch-800 pb-4">
-                            <span class="text-xs font-bold tracking-widest uppercase">Latest Notes</span>
-                            <span id="gb-count" class="text-xs font-mono text-neutral-400">총 0개</span>
-                        </div>
-
-                        <!-- Guestbook Scrollable Container -->
-                        <div id="guestbook-list" class="space-y-4 max-h-[420px] overflow-y-auto pr-2">
-                            <!-- Dynamically loaded guestbook items -->
-                        </div>
+                    
+                    <!-- Open in New Tab Button -->
+                    <div class="flex-shrink-0">
+                        <a href="https://padlet.com/sdfmkustgbu/padlet-s04598vu3zfyicjj" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 border border-arch-900 dark:border-white hover:bg-arch-900 hover:text-white dark:hover:bg-white dark:hover:text-arch-900 transition-all text-xs font-bold tracking-widest uppercase rounded-sm">
+                            <span>Padlet 새창에서 열기</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
                     </div>
+                </div>
 
+                <!-- Padlet Embed Frame -->
+                <div class="w-full bg-arch-50 dark:bg-arch-900 rounded-lg p-1.5 md:p-3 border border-arch-100 dark:border-arch-800 shadow-sm">
+                    <div class="relative w-full h-[600px] rounded-md overflow-hidden bg-[#fafafa]">
+                        <iframe src="https://padlet.com/embed/sdfmkustgbu/padlet-s04598vu3zfyicjj" 
+                                frameborder="0" 
+                                allow="camera; microphone; geolocation" 
+                                class="absolute top-0 left-0 w-full h-full"
+                                style="background:transparent; border:none;">
+                        </iframe>
+                    </div>
                 </div>
             </div>
         </section>
@@ -689,7 +672,7 @@
 
                         <div class="space-y-2">
                             <label for="message" class="text-xs font-bold tracking-widest text-neutral-400 uppercase">상세한 요구사항 및 프로젝트 설명 *</label>
-                            <textarea id="message" required rows="5" class="w-full bg-neutral-900 border border-neutral-700 focus:border-white focus:ring-0 p-3.5 text-xs text-white transition-all outline-none rounded-sm resize-none" placeholder="대지 위치, 규모, 구상하시는 공간 분위기 등을 편하게 남겨주세요."></button></textarea>
+                            <textarea id="message" required rows="5" class="w-full bg-neutral-900 border border-neutral-700 focus:border-white focus:ring-0 p-3.5 text-xs text-white transition-all outline-none rounded-sm resize-none" placeholder="대지 위치, 규모, 구상하시는 공간 분위기 등을 편하게 남겨주세요."></textarea>
                         </div>
 
                         <!-- Feedback Message Box -->
@@ -1009,108 +992,6 @@
                 feedbackBox.classList.add('hidden');
             }, 6000);
         }
-
-        // ==========================================
-        // GUESTBOOK CONTROLLER (In-Memory State)
-        // ==========================================
-        let guestbookEntries = [
-            {
-                id: 1,
-                name: "이민우 소장",
-                date: "2026.05.28",
-                message: "양평 '빛의 집' 다녀왔는데, 콘크리트 질감과 오크의 매칭이 정교하더군요. 늘 응원합니다 병훈 소장님!"
-            },
-            {
-                id: 2,
-                name: "김진아 디자이너",
-                date: "2026.04.15",
-                message: "미니멀하면서도 힘 있는 선들이 돋보이는 포트폴리오입니다. 다음 한남동 프로젝트도 정말 기대가 됩니다."
-            },
-            {
-                id: 3,
-                name: "박건우",
-                date: "2026.02.09",
-                message: "스케치 아카이브에서 날것의 고민이 느껴져서 인상 깊게 머물다 갑니다. 멋진 공간 자주 공유해 주세요!"
-            }
-        ];
-
-        function renderGuestbook() {
-            const listContainer = document.getElementById('guestbook-list');
-            const countLabel = document.getElementById('gb-count');
-            
-            // Update total count label
-            countLabel.innerText = `총 ${guestbookEntries.length}개`;
-            
-            if (guestbookEntries.length === 0) {
-                listContainer.innerHTML = `
-                    <div class="py-12 text-center text-xs text-arch-400 font-light">
-                        첫 번째 방명록을 남겨보세요.
-                    </div>
-                `;
-                return;
-            }
-
-            listContainer.innerHTML = guestbookEntries.map(entry => `
-                <div class="p-5 border border-arch-200 dark:border-arch-800 rounded-sm bg-arch-50/50 dark:bg-arch-900/50 space-y-3 relative group">
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold">${escapeHtml(entry.name)}</span>
-                        <span class="text-[10px] font-mono text-neutral-400">${entry.date}</span>
-                    </div>
-                    <p class="text-xs text-arch-600 dark:text-arch-300 font-light leading-relaxed whitespace-pre-wrap">${escapeHtml(entry.message)}</p>
-                    <button onclick="deleteGuestbookEntry(${entry.id})" class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity text-[10px] text-red-400 hover:text-red-600" title="삭제">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </button>
-                </div>
-            `).join('');
-        }
-
-        function handleGuestbookSubmit(event) {
-            event.preventDefault();
-            
-            const nameInput = document.getElementById('gb-name');
-            const passwordInput = document.getElementById('gb-password');
-            const messageInput = document.getElementById('gb-message');
-            
-            const now = new Date();
-            const formattedDate = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-            
-            const newEntry = {
-                id: Date.now(),
-                name: nameInput.value,
-                date: formattedDate,
-                message: messageInput.value
-            };
-            
-            // Add new entry to the beginning
-            guestbookEntries.unshift(newEntry);
-            
-            // Re-render and Reset Form
-            renderGuestbook();
-            document.getElementById('guestbook-form').reset();
-        }
-
-        function deleteGuestbookEntry(id) {
-            const confirmDelete = confirm("해당 방명록 글을 삭제하시겠습니까?");
-            if (confirmDelete) {
-                guestbookEntries = guestbookEntries.filter(entry => entry.id !== id);
-                renderGuestbook();
-            }
-        }
-
-        // HTML escaping utility to prevent XSS
-        function escapeHtml(str) {
-            return str
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
-
-        // Initialize guestbook list on page load
-        window.onload = function() {
-            renderGuestbook();
-        };
     </script>
 </body>
 </html>
