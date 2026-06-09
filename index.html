@@ -12,20 +12,28 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'Roboto', 'sans-serif'],
+                        sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+                        heading: ['Syne', 'sans-serif'],
+                        mono: ['Courier New', 'Courier', 'monospace'],
+                        editorial: ['Tenor Sans', 'sans-serif']
                     },
                     colors: {
                         arch: {
-                            50: '#f8f8f8',
-                            100: '#e0e0e0',
-                            200: '#c2c2c2',
-                            300: '#a3a3a3',
-                            400: '#858585',
-                            500: '#666666',
-                            600: '#4d4d4d',
-                            700: '#333333',
-                            800: '#1a1a1a',
-                            900: '#0a0a0a',
+                            50: '#fbfbf9', // 프리미엄 리넨 미색
+                            100: '#f2f0ea',
+                            200: '#e5e1d5',
+                            300: '#c5bfae',
+                            400: '#a39c89',
+                            500: '#7c7665',
+                            600: '#5c574b',
+                            700: '#3d3a32',
+                            800: '#1e1d19',
+                            900: '#0a0a0a', // 딥 블랙
+                        },
+                        bronze: {
+                            default: '#b4a284',
+                            light: '#d2c4b1',
+                            dark: '#8b795e'
                         }
                     }
                 }
@@ -34,282 +42,368 @@
     </script>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts (Pretendard 대체용 및 영문 디자인 폰트) -->
+    <!-- Google Fonts (Syne, Tenor Sans, Noto Sans KR) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Tenor+Sans&family=Noto+Sans+KR:wght@100;300;400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Montserrat', 'Noto Sans KR', sans-serif;
+            font-family: 'Noto Sans KR', sans-serif;
             scroll-behavior: smooth;
         }
+        
+        .heading-font {
+            font-family: 'Syne', sans-serif;
+        }
+
+        .editorial-font {
+            font-family: 'Tenor Sans', sans-serif;
+        }
+
         /* Custom scrollbar */
         ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+            width: 4px;
+            height: 4px;
         }
         ::-webkit-scrollbar-track {
             background: transparent;
         }
         ::-webkit-scrollbar-thumb {
-            background: #858585;
-            border-radius: 3px;
+            background: #b4a284;
+            border-radius: 2px;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #4d4d4d;
+        
+        /* Grid blueprint pattern (More delicate than before) */
+        .blueprint-bg {
+            background-size: 60px 60px;
+            background-image: linear-gradient(to right, rgba(180, 162, 132, 0.04) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(180, 162, 132, 0.04) 1px, transparent 1px);
         }
-        /* Grid background pattern */
-        .grid-bg {
-            background-size: 40px 40px;
-            background-image: linear-gradient(to right, rgba(128, 128, 128, 0.05) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(128, 128, 128, 0.05) 1px, transparent 1px);
+        .dark .blueprint-bg {
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
         }
-        .dark .grid-bg {
-            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+
+        /* Layout decorative coordinates */
+        .draft-line {
+            position: relative;
+        }
+        .draft-line::before {
+            content: '';
+            position: absolute;
+            background: rgba(180, 162, 132, 0.2);
+        }
+        .dark .draft-line::before {
+            background: rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
-<body class="bg-arch-50 text-arch-900 dark:bg-arch-900 dark:text-arch-50 transition-colors duration-300 grid-bg min-h-screen flex flex-col">
+<body class="bg-arch-50 text-arch-900 dark:bg-arch-900 dark:text-arch-50 transition-colors duration-500 blueprint-bg min-h-screen flex flex-col overflow-x-hidden">
 
-    <!-- NAV BAR -->
-    <nav class="fixed top-0 left-0 w-full z-50 bg-white/80 dark:bg-arch-900/80 backdrop-blur-md border-b border-arch-100 dark:border-arch-800 transition-colors duration-300">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <a href="#" class="text-xl md:text-2xl font-black tracking-[0.2em] text-arch-900 dark:text-white transition-colors">
-                KANG<span class="text-neutral-400 font-light">BYEONGHUN</span>
+    <!-- GLOBAL DRAFT DECORATIONS (Top/Left Grid ticks) -->
+    <div class="fixed top-0 left-0 w-full h-full pointer-events-none z-40 opacity-40">
+        <div class="absolute top-4 left-6 text-[8px] font-mono tracking-widest text-neutral-400">SYS_LOC // 37.5665° N, 126.9780° E</div>
+        <div class="absolute bottom-4 left-6 text-[8px] font-mono tracking-widest text-neutral-400">SCALE: 1 : 250 [A3]</div>
+        <div class="absolute top-4 right-24 text-[8px] font-mono tracking-widest text-neutral-400">PLANNING & STRUCTURE PORTFOLIO</div>
+    </div>
+
+    <!-- HEADER / NAVIGATION (Sleek Border & Dynamic Blur) -->
+    <nav class="fixed top-0 left-0 w-full z-50 bg-arch-50/70 dark:bg-arch-900/70 backdrop-blur-md border-b border-arch-200/50 dark:border-arch-800/50 transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 h-24 flex items-center justify-between">
+            <a href="#" class="group flex flex-col">
+                <span class="heading-font text-xl md:text-2xl font-extrabold tracking-[0.25em] text-arch-900 dark:text-white transition-colors">
+                    KANG<span class="text-bronze-default font-normal">BYEONGHUN</span>
+                </span>
+                <span class="text-[8px] font-mono tracking-[0.45em] text-neutral-400 uppercase mt-1 transition-all group-hover:text-bronze-default">ASSOCIATE ARCHITECTS</span>
             </a>
             
-            <!-- Desktop Menu -->
-            <div class="hidden md:flex items-center space-x-10 text-xs font-semibold tracking-widest uppercase">
-                <a href="#home" class="hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors">Home</a>
-                <a href="#about" class="hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors">About</a>
-                <a href="#projects" class="hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors">Projects</a>
-                <a href="#archive" class="hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors">Archive</a>
-                <a href="#guestbook" class="hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors">Guestbook</a>
-                <a href="#contact" class="hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors">Contact</a>
+            <!-- Elegant Central Navigation -->
+            <div class="hidden md:flex items-center space-x-12 text-[11px] font-semibold tracking-[0.3em] uppercase">
+                <a href="#home" class="relative py-2 hover:text-bronze-default dark:hover:text-bronze-light transition-colors group">
+                    <span>Home</span>
+                    <span class="absolute bottom-0 left-0 w-0 h-[1px] bg-bronze-default transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#about" class="relative py-2 hover:text-bronze-default dark:hover:text-bronze-light transition-colors group">
+                    <span>About</span>
+                    <span class="absolute bottom-0 left-0 w-0 h-[1px] bg-bronze-default transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#projects" class="relative py-2 hover:text-bronze-default dark:hover:text-bronze-light transition-colors group">
+                    <span>Projects</span>
+                    <span class="absolute bottom-0 left-0 w-0 h-[1px] bg-bronze-default transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#archive" class="relative py-2 hover:text-bronze-default dark:hover:text-bronze-light transition-colors group">
+                    <span>Archive</span>
+                    <span class="absolute bottom-0 left-0 w-0 h-[1px] bg-bronze-default transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#guestbook" class="relative py-2 hover:text-bronze-default dark:hover:text-bronze-light transition-colors group">
+                    <span>Guestbook</span>
+                    <span class="absolute bottom-0 left-0 w-0 h-[1px] bg-bronze-default transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#contact" class="relative py-2 hover:text-bronze-default dark:hover:text-bronze-light transition-colors group">
+                    <span>Contact</span>
+                    <span class="absolute bottom-0 left-0 w-0 h-[1px] bg-bronze-default transition-all duration-300 group-hover:w-full"></span>
+                </a>
             </div>
 
-            <!-- Darkmode & Mobile Toggle -->
-            <div class="flex items-center space-x-4">
-                <!-- Theme Toggle Button -->
+            <!-- Controller Block -->
+            <div class="flex items-center space-x-3">
+                <!-- Theme Controller -->
                 <button id="theme-toggle" class="p-2.5 rounded-full hover:bg-arch-100 dark:hover:bg-arch-800 transition-all text-sm" aria-label="Toggle Theme">
                     <i id="theme-icon" class="fa-solid fa-moon text-arch-700 dark:text-arch-300"></i>
                 </button>
                 
-                <!-- Mobile Menu Button -->
-                <button id="mobile-menu-btn" class="md:hidden p-2.5 rounded-full hover:bg-arch-100 dark:hover:bg-arch-800 transition-all" aria-label="Open Menu">
-                    <i class="fa-solid fa-bars text-xl"></i>
+                <!-- Mobile Navigation Trigger -->
+                <button id="mobile-menu-btn" class="md:hidden p-2.5 hover:bg-arch-100 dark:hover:bg-arch-800 transition-all" aria-label="Open Menu">
+                    <div class="w-6 h-4 flex flex-col justify-between">
+                        <span class="w-full h-[1.5px] bg-arch-900 dark:bg-white transition-all"></span>
+                        <span class="w-2/3 h-[1.5px] bg-arch-900 dark:bg-white self-end transition-all"></span>
+                        <span class="w-full h-[1.5px] bg-arch-900 dark:bg-white transition-all"></span>
+                    </div>
                 </button>
             </div>
         </div>
 
-        <!-- Mobile Drawer (Slide down) -->
-        <div id="mobile-menu" class="hidden md:hidden border-t border-arch-100 dark:border-arch-800 bg-white dark:bg-arch-900 transition-all duration-300 px-6 py-6 space-y-4">
-            <a href="#home" class="block text-sm font-semibold tracking-widest uppercase hover:text-neutral-500 py-2 mobile-link">Home</a>
-            <a href="#about" class="block text-sm font-semibold tracking-widest uppercase hover:text-neutral-500 py-2 mobile-link">About</a>
-            <a href="#projects" class="block text-sm font-semibold tracking-widest uppercase hover:text-neutral-500 py-2 mobile-link">Projects</a>
-            <a href="#archive" class="block text-sm font-semibold tracking-widest uppercase hover:text-neutral-500 py-2 mobile-link">Archive</a>
-            <a href="#guestbook" class="block text-sm font-semibold tracking-widest uppercase hover:text-neutral-500 py-2 mobile-link">Guestbook</a>
-            <a href="#contact" class="block text-sm font-semibold tracking-widest uppercase hover:text-neutral-500 py-2 mobile-link">Contact</a>
+        <!-- Mobile Fullscreen Menu Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-arch-200/50 dark:border-arch-800/50 bg-arch-50/95 dark:bg-arch-900/95 backdrop-blur-lg transition-all duration-500 px-8 py-8 space-y-4">
+            <a href="#home" class="block text-lg font-bold tracking-widest uppercase hover:text-bronze-default py-2 mobile-link">Home</a>
+            <a href="#about" class="block text-lg font-bold tracking-widest uppercase hover:text-bronze-default py-2 mobile-link">About</a>
+            <a href="#projects" class="block text-lg font-bold tracking-widest uppercase hover:text-bronze-default py-2 mobile-link">Projects</a>
+            <a href="#archive" class="block text-lg font-bold tracking-widest uppercase hover:text-bronze-default py-2 mobile-link">Archive</a>
+            <a href="#guestbook" class="block text-lg font-bold tracking-widest uppercase hover:text-bronze-default py-2 mobile-link">Guestbook</a>
+            <a href="#contact" class="block text-lg font-bold tracking-widest uppercase hover:text-bronze-default py-2 mobile-link">Contact</a>
         </div>
     </nav>
 
-    <!-- MAIN CONTENT -->
-    <main class="flex-grow pt-20">
+    <!-- MAIN IMMERSIVE CONTAINER -->
+    <main class="flex-grow">
 
-        <!-- HERO SECTION -->
-        <section id="home" class="relative min-h-[90vh] flex flex-col justify-center items-center px-6 overflow-hidden">
-            <!-- Background Image Overlay with CSS pattern -->
-            <div class="absolute inset-0 z-0 opacity-20 dark:opacity-10 mix-blend-overlay">
-                <!-- Fallback background shape mimicking abstract architectural blueprint lines -->
-                <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                    <line x1="10%" y1="0" x2="10%" y2="100%" stroke="gray" stroke-width="1"/>
-                    <line x1="30%" y1="0" x2="30%" y2="100%" stroke="gray" stroke-width="1"/>
-                    <line x1="70%" y1="0" x2="70%" y2="100%" stroke="gray" stroke-width="1"/>
-                    <line x1="0" y1="20%" x2="100%" y2="20%" stroke="gray" stroke-width="1"/>
-                    <line x1="0" y1="60%" x2="100%" y2="60%" stroke="gray" stroke-width="1"/>
-                    <circle cx="30%" cy="60%" r="20%" fill="none" stroke="gray" stroke-width="0.5" stroke-dasharray="10 10"/>
-                </svg>
+        <!-- HERO SECTION (High-end Editorial Layout) -->
+        <section id="home" class="relative min-h-screen flex flex-col justify-center items-center px-6 lg:px-16 overflow-hidden pt-24">
+            
+            <!-- Delicate Section Coordinates -->
+            <div class="absolute top-28 left-12 hidden lg:flex flex-col space-y-1">
+                <span class="text-[8px] font-mono text-neutral-400">SECTION_H01 // INTRO</span>
+                <span class="text-[8px] font-mono text-bronze-default">STABILITY & VACANCY</span>
             </div>
 
-            <!-- Interactive Hero Slider / Showcase -->
-            <div class="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center z-10">
-                <div class="lg:col-span-5 space-y-6 text-center lg:text-left">
-                    <p class="text-xs md:text-sm font-bold tracking-[0.4em] text-neutral-400 dark:text-neutral-500 uppercase">Architecture & Space Design</p>
-                    <h1 class="text-4xl md:text-6xl font-black tracking-tight leading-none text-arch-900 dark:text-white">
+            <!-- Asymmetrical Architectural Hero Frame -->
+            <div class="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center z-10 py-12">
+                
+                <!-- Left Title Block -->
+                <div class="lg:col-span-5 space-y-8 text-left">
+                    <div class="inline-flex items-center space-x-2">
+                        <span class="w-2.5 h-[1px] bg-bronze-default"></span>
+                        <span class="text-[10px] font-mono tracking-[0.35em] text-bronze-default uppercase font-bold">KANG BYEONGHUN // ARCHITECTS</span>
+                    </div>
+                    
+                    <h1 class="heading-font text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.05] text-arch-900 dark:text-white">
                         여백과 선,<br>
-                        <span class="text-neutral-400 font-light">그리고 삶을</span><br>
-                        짓다.
+                        <span class="text-neutral-400/80 dark:text-neutral-500 font-light italic editorial-font block my-2">and Living</span>
+                        삶을 짓다.
                     </h1>
-                    <p class="text-sm md:text-base text-arch-500 dark:text-arch-400 max-w-md mx-auto lg:mx-0 font-light leading-relaxed">
-                        자연과의 끊임없는 조화를 모색하고, 인위적인 선을 배제하여 그 자리에 머무는 사람들의 따스한 흔적과 기억을 설계합니다.
-                    </p>
-                    <div class="pt-4 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
-                        <a href="#projects" class="px-8 py-3.5 bg-arch-900 text-white dark:bg-white dark:text-arch-900 text-xs font-bold tracking-widest uppercase transition-all hover:bg-neutral-800 dark:hover:bg-neutral-100 flex items-center justify-center gap-2">
+                    
+                    <!-- Vertical Line Detail -->
+                    <div class="border-l-[1.5px] border-bronze-default/50 pl-6 space-y-4">
+                        <p class="text-xs md:text-sm text-arch-500 dark:text-arch-400 font-light leading-relaxed max-w-md">
+                            자연과의 끊임없는 조화를 모색하며, 인위적인 기하학의 틀을 벗어나 공간에 머무는 사람들의 따스한 기억과 그림자를 설계합니다.
+                        </p>
+                    </div>
+
+                    <!-- Call To Actions -->
+                    <div class="pt-6 flex flex-wrap gap-4">
+                        <a href="#projects" class="group px-8 py-4 bg-arch-900 text-white dark:bg-white dark:text-arch-900 text-[10px] font-bold tracking-[0.25em] uppercase transition-all duration-300 hover:bg-bronze-default hover:text-white flex items-center justify-center gap-3">
                             <span>VIEW WORKS</span>
-                            <i class="fa-solid fa-arrow-right"></i>
+                            <i class="fa-solid fa-arrow-right-long transition-transform duration-300 group-hover:translate-x-1.5"></i>
                         </a>
-                        <a href="#contact" class="px-8 py-3.5 border border-arch-300 dark:border-arch-700 hover:border-arch-900 dark:hover:border-white text-xs font-bold tracking-widest uppercase transition-all flex items-center justify-center">
+                        <a href="#contact" class="px-8 py-4 border border-arch-300 dark:border-arch-700 hover:border-bronze-default dark:hover:border-bronze-light text-[10px] font-bold tracking-[0.25em] uppercase transition-all duration-300 flex items-center justify-center">
                             GET IN TOUCH
                         </a>
                     </div>
                 </div>
 
-                <div class="lg:col-span-7 relative h-[350px] md:h-[480px] w-full overflow-hidden group shadow-2xl rounded-sm">
-                    <!-- Image Showcase Carousel (Manual) -->
+                <!-- Right Advanced Presentation Frame -->
+                <div class="lg:col-span-7 relative w-full h-[400px] md:h-[550px] bg-neutral-100 dark:bg-neutral-950/80 border border-arch-200 dark:border-arch-800 overflow-hidden group shadow-2xl rounded-sm">
+                    
+                    <!-- Top Info bar inside slider -->
+                    <div class="absolute top-4 left-4 z-20 flex items-center space-x-2 text-[8px] font-mono text-neutral-400 tracking-widest uppercase">
+                        <span class="w-1.5 h-1.5 rounded-full bg-bronze-default animate-pulse"></span>
+                        <span>CONCEPT MODELING VIEW</span>
+                    </div>
+
+                    <!-- Image Showcase Carousel (Fully redesigned vector imagery) -->
                     <div id="hero-carousel" class="w-full h-full relative">
-                        <div class="carousel-item absolute inset-0 transition-opacity duration-1000 opacity-100">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
-                            <!-- Inline SVG placeholder resembling architectural masterpiece -->
-                            <svg class="w-full h-full object-cover bg-neutral-200 dark:bg-neutral-800" viewBox="0 0 800 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="800" height="500" fill="#2c2c2c"/>
-                                <path d="M100 450 L300 150 L500 450 Z" fill="#3d3d3d"/>
-                                <path d="M400 450 L600 200 L750 450 Z" fill="#4d4d4d"/>
-                                <line x1="300" y1="150" x2="300" y2="450" stroke="#a3a3a3" stroke-width="2" stroke-dasharray="5 5"/>
-                                <line x1="600" y1="200" x2="600" y2="450" stroke="#a3a3a3" stroke-width="2" stroke-dasharray="5 5"/>
-                                <text x="50" y="80" fill="white" font-size="24" font-weight="bold">PROJECT 01 : THE LIGHT HOUSE</text>
-                                <text x="50" y="110" fill="#a3a3a3" font-size="14">자연광을 극대화한 미니멀리즘 단독주택</text>
+                        <!-- Carousel Slide 1 -->
+                        <div class="carousel-item absolute inset-0 transition-all duration-1000 opacity-100">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 z-10"></div>
+                            <svg class="w-full h-full object-cover bg-[#161616]" viewBox="0 0 800 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Blueprint lines background -->
+                                <line x1="0" y1="100" x2="800" y2="100" stroke="#444" stroke-width="0.5" stroke-dasharray="2 2"/>
+                                <line x1="100" y1="0" x2="100" y2="500" stroke="#444" stroke-width="0.5" stroke-dasharray="2 2"/>
+                                <!-- Concrete building structures (Conceptual vector art) -->
+                                <rect x="150" y="220" width="160" height="280" fill="#2d2d2d" stroke="#555" stroke-width="0.5"/>
+                                <rect x="310" y="140" width="180" height="360" fill="#3a3a3a" stroke="#888" stroke-width="0.5"/>
+                                <rect x="490" y="280" width="160" height="220" fill="#1f1f1f" stroke="#555" stroke-width="0.5"/>
+                                <!-- Golden light section -->
+                                <rect x="350" y="200" width="100" height="150" fill="#b4a284" opacity="0.8"/>
+                                <!-- Drafting annotations -->
+                                <circle cx="350" cy="200" r="4" fill="#fff"/>
+                                <line x1="350" y1="200" x2="280" y2="120" stroke="#fff" stroke-width="0.5"/>
+                                <text x="220" y="110" fill="#fff" font-size="10" font-family="monospace">AXIS_PT_REF: 01</text>
+                                
+                                <text x="50" y="440" fill="white" font-size="28" font-family="Syne" font-weight="bold">THE LIGHT HOUSE</text>
+                                <text x="50" y="465" fill="#c5bfae" font-size="12">양평 단독주택 // 자연광 극대화를 지향한 미니멀 콘크리트 매스</text>
                             </svg>
                         </div>
-                        <div class="carousel-item absolute inset-0 transition-opacity duration-1000 opacity-0">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
-                            <svg class="w-full h-full object-cover bg-neutral-200 dark:bg-neutral-800" viewBox="0 0 800 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="800" height="500" fill="#1e1e1e"/>
-                                <path d="M50 450 L150 100 L700 100 L750 450 Z" fill="#2d2d2d"/>
-                                <rect x="200" y="200" width="100" height="150" fill="#3d3d3d" stroke="#5d5d5d"/>
-                                <rect x="350" y="200" width="100" height="150" fill="#3d3d3d" stroke="#5d5d5d"/>
-                                <rect x="500" y="200" width="100" height="150" fill="#3d3d3d" stroke="#5d5d5d"/>
-                                <text x="50" y="80" fill="white" font-size="24" font-weight="bold">PROJECT 02 : FLOATING BOX</text>
-                                <text x="50" y="110" fill="#a3a3a3" font-size="14">공중에 띄운 매스를 활용한 갤러리형 오피스</text>
+                        <!-- Carousel Slide 2 -->
+                        <div class="carousel-item absolute inset-0 transition-all duration-1000 opacity-0">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 z-10"></div>
+                            <svg class="w-full h-full object-cover bg-[#0d0f12]" viewBox="0 0 800 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="400" cy="250" r="150" stroke="#334155" stroke-width="0.5" stroke-dasharray="5 5"/>
+                                <circle cx="400" cy="250" r="80" stroke="#b4a284" stroke-width="1"/>
+                                <path d="M150 350 L250 180 L550 180 L650 350 Z" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+                                <line x1="150" y1="350" x2="650" y2="350" stroke="#475569" stroke-width="2"/>
+                                <!-- Interactive node -->
+                                <circle cx="250" cy="180" r="5" fill="#b4a284"/>
+                                <text x="270" y="175" fill="#b4a284" font-size="10" font-family="monospace">PITCH_POINT // CRITICAL</text>
+                                
+                                <text x="50" y="440" fill="white" font-size="28" font-family="Syne" font-weight="bold">FLOATING BOX GALLERY</text>
+                                <text x="50" y="465" fill="#c5bfae" font-size="12">한남동 복합시설 // 공중에 부유하는 캔틸레버 구조와 필로티</text>
                             </svg>
                         </div>
-                        <div class="carousel-item absolute inset-0 transition-opacity duration-1000 opacity-0">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
-                            <svg class="w-full h-full object-cover bg-neutral-200 dark:bg-neutral-800" viewBox="0 0 800 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="800" height="500" fill="#121212"/>
-                                <circle cx="400" cy="250" r="180" fill="#1e1e1e"/>
-                                <path d="M220 250 L580 250" stroke="#a3a3a3" stroke-width="4"/>
-                                <path d="M300 150 L500 350" stroke="#a3a3a3" stroke-width="2"/>
-                                <text x="50" y="80" fill="white" font-size="24" font-weight="bold">PROJECT 03 : MONOLITH SPIRAL</text>
-                                <text x="50" y="110" fill="#a3a3a3" font-size="14">곡선과 직선이 기하학적으로 만나는 공공 도서관</text>
+                        <!-- Carousel Slide 3 -->
+                        <div class="carousel-item absolute inset-0 transition-all duration-1000 opacity-0">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 z-10"></div>
+                            <svg class="w-full h-full object-cover bg-[#1a1c1a]" viewBox="0 0 800 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M100 400 C 250 200, 550 200, 700 400" stroke="#555" stroke-width="1" fill="none"/>
+                                <path d="M100 400 C 250 150, 550 150, 700 400" stroke="#b4a284" stroke-width="1.5" fill="none" stroke-dasharray="4 4"/>
+                                <path d="M100 400 C 250 100, 550 100, 700 400" stroke="#888" stroke-width="0.5" fill="none"/>
+                                <line x1="400" y1="100" x2="400" y2="400" stroke="#444" stroke-width="1"/>
+                                
+                                <text x="50" y="440" fill="white" font-size="28" font-family="Syne" font-weight="bold">MONOLITH SPIRAL</text>
+                                <text x="50" y="465" fill="#c5bfae" font-size="12">시립도서관 당선작 // 곡선형 보이드 관통 설계와 지속 가능한 조형</text>
                             </svg>
                         </div>
                     </div>
 
-                    <!-- Carousel Controls -->
-                    <div class="absolute bottom-6 right-6 z-20 flex space-x-2">
-                        <button onclick="prevSlide()" class="w-10 h-10 bg-white/20 hover:bg-white/40 dark:bg-black/20 dark:hover:bg-black/40 text-white flex items-center justify-center backdrop-blur-sm transition-all rounded-full">
-                            <i class="fa-solid fa-chevron-left text-xs"></i>
+                    <!-- Floating Compass Icon Decor -->
+                    <div class="absolute right-4 top-4 w-12 h-12 border border-neutral-600/50 rounded-full flex items-center justify-center opacity-70">
+                        <svg class="w-6 h-6 animate-spin-slow" viewBox="0 0 24 24" fill="none">
+                            <line x1="12" y1="2" x2="12" y2="22" stroke="#b4a284" stroke-width="1"/>
+                            <line x1="2" y1="12" x2="22" y2="12" stroke="#b4a284" stroke-width="1"/>
+                            <polygon points="12,2 15,10 12,8 9,10" fill="#b4a284"/>
+                            <text x="14" y="8" fill="#b4a284" font-size="6">N</text>
+                        </svg>
+                    </div>
+
+                    <!-- Slide Controller buttons with premium minimalist styling -->
+                    <div class="absolute bottom-6 right-6 z-20 flex space-x-1">
+                        <button onclick="prevSlide()" class="w-12 h-12 bg-arch-900/40 hover:bg-arch-900 text-white flex items-center justify-center backdrop-blur-md transition-all duration-300 border border-neutral-700/50">
+                            <i class="fa-solid fa-arrow-left-long text-xs"></i>
                         </button>
-                        <button onclick="nextSlide()" class="w-10 h-10 bg-white/20 hover:bg-white/40 dark:bg-black/20 dark:hover:bg-black/40 text-white flex items-center justify-center backdrop-blur-sm transition-all rounded-full">
-                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        <button onclick="nextSlide()" class="w-12 h-12 bg-arch-900/40 hover:bg-arch-900 text-white flex items-center justify-center backdrop-blur-md transition-all duration-300 border border-neutral-700/50">
+                            <i class="fa-solid fa-arrow-right-long text-xs"></i>
                         </button>
                     </div>
                 </div>
             </div>
             
-            <!-- Scroll Down Indicator -->
-            <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex flex-col items-center space-y-2 text-[10px] tracking-[0.3em] font-semibold text-neutral-400 dark:text-neutral-500 uppercase">
-                <span>SCROLL DOWN</span>
-                <div class="w-[1px] h-10 bg-gradient-to-b from-neutral-400 to-transparent animate-bounce"></div>
+            <!-- Elegant bottom coordinate tape -->
+            <div class="absolute bottom-6 left-12 right-12 flex justify-between items-end border-t border-arch-200/50 dark:border-arch-800/50 pt-4">
+                <div class="text-[8px] font-mono text-neutral-400">STAGE // 01 / FRAME_OUT</div>
+                <div class="text-[8px] font-mono text-neutral-400">© 2026 KANG BYEONGHUN</div>
             </div>
         </section>
 
-        <!-- ABOUT SECTION -->
-        <section id="about" class="py-24 px-6 max-w-7xl mx-auto border-t border-arch-100 dark:border-arch-800">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <!-- ABOUT SECTION (Arch-Drafting Sheet Concept) -->
+        <section id="about" class="py-32 px-6 lg:px-16 max-w-7xl mx-auto border-t border-arch-200/50 dark:border-arch-800/50">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
                 
-                <!-- Sticky Left Info -->
-                <div class="lg:col-span-4 lg:sticky lg:top-28 space-y-6">
-                    <p class="text-xs font-bold tracking-[0.4em] text-neutral-400 uppercase">Who We Are</p>
-                    <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">건축을 통한<br>공간의 시학</h2>
-                    <div class="h-1 w-12 bg-arch-900 dark:bg-white"></div>
-                    <p class="text-sm text-arch-500 dark:text-arch-400 leading-relaxed font-light">
-                        우리는 단순한 물리적 구조를 만드는 것을 넘어, 시간의 흐름에 따라 변화하는 빛과 바람, 그리고 소리까지 설계의 요소로 끌어들입니다.
+                <!-- Left Editorial Text Block -->
+                <div class="lg:col-span-5 lg:sticky lg:top-32 space-y-8">
+                    <div class="inline-flex items-center space-x-2">
+                        <span class="w-1.5 h-1.5 bg-bronze-default rounded-full"></span>
+                        <span class="text-[10px] font-mono tracking-[0.4em] text-bronze-default uppercase font-bold">01 // ESSENCE</span>
+                    </div>
+                    <h2 class="heading-font text-4xl md:text-5xl font-black tracking-tight leading-[1.1] text-arch-900 dark:text-white">
+                        공간의 시학,<br>선과 여백의<br>지속적 공명.
+                    </h2>
+                    <div class="w-16 h-[2px] bg-bronze-default"></div>
+                    <p class="text-xs md:text-sm text-arch-500 dark:text-arch-400 leading-relaxed font-light">
+                        우리는 단순한 물리적인 콘크리트 상자를 넘어, 그 내부로 입사하는 빛의 깊이와 공기의 흐름, 그리고 그곳을 살아가는 사람의 내밀한 서사까지도 시각화의 설계 요소로 다룹니다.
                     </p>
                 </div>
 
-                <!-- Right Details -->
-                <div class="lg:col-span-8 space-y-16">
-                    <!-- Bio & Core Philosophy -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div>
-                            <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-                                <span class="w-1.5 h-1.5 bg-neutral-400 rounded-full"></span>
-                                Philosophy / 철학
+                <!-- Right Advanced Milestones and Timelines -->
+                <div class="lg:col-span-7 space-y-20">
+                    
+                    <!-- Bio grid layout -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 border-b border-arch-200/50 dark:border-arch-800/50 pb-12">
+                        <div class="space-y-3">
+                            <h3 class="editorial-font text-lg font-bold text-arch-900 dark:text-white flex items-center gap-2">
+                                <span class="text-bronze-default text-xs font-mono">[a]</span> Philosophy
                             </h3>
-                            <p class="text-sm text-arch-600 dark:text-arch-300 leading-relaxed font-light">
-                                건축가는 경계를 그리는 사람인 동시에 그 경계를 허무는 사람이어야 합니다. 안과 밖, 사적 공간과 공적 공간의 유연한 소통을 지향합니다.
+                            <p class="text-xs text-arch-600 dark:text-arch-300 leading-relaxed font-light">
+                                건축물은 외부 도시 환경에 조용하게 스며들되, 내부로는 무한한 사색을 허용해야 합니다. 안과 밖을 흐릿하게 지우는 경계 허물기를 지향합니다.
                             </p>
                         </div>
-                        <div>
-                            <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-                                <span class="w-1.5 h-1.5 bg-neutral-400 rounded-full"></span>
-                                Sustainability / 지속가능성
+                        <div class="space-y-3">
+                            <h3 class="editorial-font text-lg font-bold text-arch-900 dark:text-white flex items-center gap-2">
+                                <span class="text-bronze-default text-xs font-mono">[b]</span> Craftsmanship
                             </h3>
-                            <p class="text-sm text-arch-600 dark:text-arch-300 leading-relaxed font-light">
-                                제로에너지 건축물 구현부터 자연 친화적인 자재 선정까지, 미래 세대와 주변 환경에 무리를 주지 않는 지속 가능한 설계를 약속합니다.
+                            <p class="text-xs text-arch-600 dark:text-arch-300 leading-relaxed font-light">
+                                미세한 디테일의 오차가 전체 구조의 시학을 무너뜨릴 수 있기에 시공 재료의 질감 매칭, 결합 철물의 보이지 않는 수납을 고집합니다.
                             </p>
                         </div>
                     </div>
 
-                    <!-- History / Timeline -->
-                    <div class="space-y-6">
-                        <h3 class="text-lg font-bold flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-neutral-400 rounded-full"></span>
-                            Milestones & History / 약력
+                    <!-- Milestones & Awards -->
+                    <div class="space-y-8">
+                        <h3 class="editorial-font text-lg font-bold text-arch-900 dark:text-white flex items-center gap-2">
+                            <span class="text-bronze-default text-xs font-mono">[c]</span> Chronology & Awards
                         </h3>
-                        <div class="relative border-l border-arch-200 dark:border-arch-700 ml-3 space-y-8 py-2">
-                            <!-- Timeline Item -->
-                            <div class="relative pl-8">
-                                <div class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-arch-900 dark:bg-white"></div>
-                                <span class="text-xs font-mono font-bold text-neutral-400">2024 - Present</span>
-                                <h4 class="text-base font-bold">KANG BYEONGHUN 건축사사무소 대표 소장</h4>
-                                <p class="text-xs text-arch-500 dark:text-arch-400 mt-1 font-light">다수의 단독주택 및 소규모 상업시설 총괄 디자인 및 감리 진행</p>
+                        <div class="relative border-l border-arch-200/70 dark:border-arch-800 ml-2.5 space-y-12 py-2">
+                            
+                            <!-- Timeline 1 -->
+                            <div class="relative pl-8 group">
+                                <div class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-arch-900 dark:bg-white border-2 border-arch-50 dark:border-arch-900 transition-colors group-hover:bg-bronze-default"></div>
+                                <span class="text-[10px] font-mono font-bold text-bronze-default">2024 - PRESENT</span>
+                                <h4 class="text-base font-bold mt-1 text-arch-900 dark:text-white">KANG BYEONGHUN ARCHITECTS 대표 소장</h4>
+                                <p class="text-xs text-arch-500 dark:text-arch-400 mt-1 font-light leading-relaxed">자연 친화적 프리미엄 단독주택 및 도심형 갤러리/오피스 설계 및 디테일 총괄 감리 진행.</p>
                             </div>
-                            <!-- Timeline Item -->
-                            <div class="relative pl-8">
-                                <div class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-arch-400"></div>
-                                <span class="text-xs font-mono font-bold text-neutral-400">2020 - 2023</span>
-                                <h4 class="text-base font-bold">A&B 종합건축사사무소 수석 디자이너</h4>
-                                <p class="text-xs text-arch-500 dark:text-arch-400 mt-1 font-light">대규모 공공도서관, 박물관 공모전 당선작 설계 참여 및 실무 총괄</p>
+
+                            <!-- Timeline 2 -->
+                            <div class="relative pl-8 group">
+                                <div class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-arch-300 dark:bg-arch-700 border-2 border-arch-50 dark:border-arch-900 transition-colors group-hover:bg-bronze-default"></div>
+                                <span class="text-[10px] font-mono font-bold text-neutral-400">2020 - 2023</span>
+                                <h4 class="text-base font-bold mt-1 text-arch-900 dark:text-white">A&B 종합건축사사무소 책임 디자이너</h4>
+                                <p class="text-xs text-arch-500 dark:text-arch-400 mt-1 font-light leading-relaxed">대규모 복합문화단지 마스터플랜 수립 및 공공도서관 신축 공모전 우승 설계 참여.</p>
                             </div>
-                            <!-- Timeline Item -->
-                            <div class="relative pl-8">
-                                <div class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-arch-300"></div>
-                                <span class="text-xs font-mono font-bold text-neutral-400">2018</span>
-                                <h4 class="text-base font-bold">한국건축설계 대전 우수상 수상</h4>
-                                <p class="text-xs text-arch-500 dark:text-arch-400 mt-1 font-light">'도시 재생과 공유 주거' 제안 프로젝트로 신인상 부문 수상</p>
+
+                            <!-- Timeline 3 -->
+                            <div class="relative pl-8 group">
+                                <div class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-arch-300 dark:bg-arch-700 border-2 border-arch-50 dark:border-arch-900 transition-colors group-hover:bg-bronze-default"></div>
+                                <span class="text-[10px] font-mono font-bold text-neutral-400">2018</span>
+                                <h4 class="text-base font-bold mt-1 text-arch-900 dark:text-white">한국건축설계 대전 우수상 수상 (Gold Medal)</h4>
+                                <p class="text-xs text-arch-500 dark:text-arch-400 mt-1 font-light leading-relaxed">'도시의 공백과 공유 주거 시스템'에 관한 논문 및 비전 모델 제출작으로 선정.</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Skills & Software Capabilities -->
+                    <!-- Fine Engineering Capabilities -->
                     <div class="space-y-6">
-                        <h3 class="text-lg font-bold flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-neutral-400 rounded-full"></span>
-                            Expertise & Tools / 핵심 역량
+                        <h3 class="editorial-font text-lg font-bold text-arch-900 dark:text-white flex items-center gap-2">
+                            <span class="text-bronze-default text-xs font-mono">[d]</span> Architectural Technology
                         </h3>
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                            <div class="p-4 border border-arch-200 dark:border-arch-800 rounded-sm hover:border-arch-400 dark:hover:border-arch-600 transition-all text-center">
-                                <i class="fa-solid fa-cube text-xl mb-2 text-neutral-500"></i>
-                                <h4 class="text-sm font-bold">BIM (Revit)</h4>
-                                <p class="text-[11px] text-arch-400 mt-1">3D 설계 및 시공성 검토</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="p-5 bg-white dark:bg-arch-950/60 border border-arch-200/50 dark:border-arch-800 rounded-sm hover:border-bronze-default transition-all duration-300">
+                                <span class="text-[10px] font-mono text-bronze-default">STRUCTURAL TECH</span>
+                                <h4 class="text-sm font-bold mt-1 text-arch-900 dark:text-white">Parametric Geometry</h4>
+                                <p class="text-[11px] text-arch-400 mt-1">Rhino & Grasshopper를 활용한 유기적 패턴 및 비정형 외장 패널 최적화 알고리즘 구현.</p>
                             </div>
-                            <div class="p-4 border border-arch-200 dark:border-arch-800 rounded-sm hover:border-arch-400 dark:hover:border-arch-600 transition-all text-center">
-                                <i class="fa-solid fa-bezier-curve text-xl mb-2 text-neutral-500"></i>
-                                <h4 class="text-sm font-bold">Rhino & Grasshopper</h4>
-                                <p class="text-[11px] text-arch-400 mt-1">비정형 파라메트릭 디자인</p>
-                            </div>
-                            <div class="p-4 border border-arch-200 dark:border-arch-800 rounded-sm hover:border-arch-400 dark:hover:border-arch-600 transition-all text-center">
-                                <i class="fa-solid fa-image text-xl mb-2 text-neutral-500"></i>
-                                <h4 class="text-sm font-bold">Lumion & V-Ray</h4>
-                                <p class="text-[11px] text-arch-400 mt-1">실시간 렌더링 및 시각화</p>
-                            </div>
-                            <div class="p-4 border border-arch-200 dark:border-arch-800 rounded-sm hover:border-arch-400 dark:hover:border-arch-600 transition-all text-center">
-                                <i class="fa-solid fa-compass-drafting text-xl mb-2 text-neutral-500"></i>
-                                <h4 class="text-sm font-bold">AutoCAD</h4>
-                                <p class="text-[11px] text-arch-400 mt-1">2D 인허가 및 상세 도면 설계</p>
+                            <div class="p-5 bg-white dark:bg-arch-950/60 border border-arch-200/50 dark:border-arch-800 rounded-sm hover:border-bronze-default transition-all duration-300">
+                                <span class="text-[10px] font-mono text-bronze-default">BIM DATA COLLABORATION</span>
+                                <h4 class="text-sm font-bold mt-1 text-arch-900 dark:text-white">Integrated BIM System</h4>
+                                <p class="text-[11px] text-arch-400 mt-1">Revit을 기반으로 한 복잡한 공조설비, 구조부재 간의 시공 전 정밀한 간섭 검토 및 모델링 가이딩.</p>
                             </div>
                         </div>
                     </div>
@@ -318,258 +412,300 @@
             </div>
         </section>
 
-        <!-- PROJECTS SECTION (PORTFOLIO GRID) -->
-        <section id="projects" class="py-24 bg-white dark:bg-arch-950/40 border-t border-b border-arch-100 dark:border-arch-800">
-            <div class="max-w-7xl mx-auto px-6">
+        <!-- PROJECTS SECTION (Asymmetrical Modern Editorial Grid) -->
+        <section id="projects" class="py-32 bg-white dark:bg-arch-950/20 border-t border-b border-arch-200/50 dark:border-arch-800/50">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12">
                 
-                <!-- Section Title & Filter Tabs -->
-                <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+                <!-- Editorial Title Block -->
+                <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-24">
                     <div class="space-y-4">
-                        <p class="text-xs font-bold tracking-[0.4em] text-neutral-400 uppercase">Selected Works</p>
-                        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">건축 설계 프로젝트</h2>
+                        <div class="flex items-center space-x-2">
+                            <span class="w-8 h-[1px] bg-bronze-default"></span>
+                            <span class="text-[10px] font-mono tracking-[0.35em] text-bronze-default uppercase font-bold">PORTFOLIO INDEX</span>
+                        </div>
+                        <h2 class="heading-font text-4xl md:text-5xl font-black tracking-tight leading-none text-arch-900 dark:text-white">선별된 작업들.</h2>
                     </div>
                     
-                    <!-- Filter Navigation -->
-                    <div class="flex flex-wrap gap-2 text-xs font-bold tracking-wider uppercase border-b border-arch-100 dark:border-arch-800 pb-2">
-                        <button onclick="filterProjects('all')" class="project-filter-btn px-4 py-2 text-arch-900 dark:text-white border-b-2 border-arch-900 dark:border-white transition-all">ALL</button>
-                        <button onclick="filterProjects('residential')" class="project-filter-btn px-4 py-2 text-arch-400 hover:text-arch-950 dark:hover:text-white transition-all">RESIDENTIAL</button>
-                        <button onclick="filterProjects('commercial')" class="project-filter-btn px-4 py-2 text-arch-400 hover:text-arch-950 dark:hover:text-white transition-all">COMMERCIAL</button>
-                        <button onclick="filterProjects('public')" class="project-filter-btn px-4 py-2 text-arch-400 hover:text-arch-950 dark:hover:text-white transition-all">PUBLIC</button>
+                    <!-- High-end Design Filter Tabs -->
+                    <div class="flex flex-wrap gap-4 text-xs font-mono tracking-widest uppercase border-b border-arch-100 dark:border-arch-800 pb-2">
+                        <button onclick="filterProjects('all')" class="project-filter-btn px-2 py-2 text-arch-900 dark:text-white border-b-2 border-arch-900 dark:border-white transition-all duration-300">/ ALL_WORKS</button>
+                        <button onclick="filterProjects('residential')" class="project-filter-btn px-2 py-2 text-arch-400 hover:text-arch-900 dark:hover:text-white transition-all duration-300">/ RESIDENTIAL</button>
+                        <button onclick="filterProjects('commercial')" class="project-filter-btn px-2 py-2 text-arch-400 hover:text-arch-900 dark:hover:text-white transition-all duration-300">/ COMMERCIAL</button>
+                        <button onclick="filterProjects('public')" class="project-filter-btn px-2 py-2 text-arch-400 hover:text-arch-900 dark:hover:text-white transition-all duration-300">/ PUBLIC</button>
                     </div>
                 </div>
 
-                <!-- Projects Grid -->
-                <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Project 1 -->
-                    <div class="project-card group cursor-pointer bg-arch-50 dark:bg-arch-900 border border-arch-100 dark:border-arch-800 overflow-hidden rounded-sm transition-all hover:shadow-lg" data-category="residential" onclick="openProjectModal(1)">
-                        <div class="relative aspect-[4/3] overflow-hidden">
-                            <!-- Inline SVG resembling the Project -->
+                <!-- Asymmetrical Layout Grid (Custom heights to feel editorial) -->
+                <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16">
+                    
+                    <!-- Card 1 (Residential) -->
+                    <div class="project-card group cursor-pointer bg-arch-50 dark:bg-arch-900 border border-arch-200/50 dark:border-arch-800 overflow-hidden rounded-sm transition-all duration-500 hover:shadow-2xl" data-category="residential" onclick="openProjectModal(1)">
+                        <div class="relative aspect-[4/3] overflow-hidden bg-neutral-900">
+                            <!-- Premium SVG Layout -->
                             <svg class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="400" height="300" fill="#2d3748"/>
-                                <path d="M50 250 L200 80 L350 250 Z" fill="#4a5568"/>
-                                <rect x="150" y="180" width="100" height="70" fill="#718096"/>
-                                <line x1="200" y1="80" x2="200" y2="250" stroke="#cbd5e0" stroke-width="2" stroke-dasharray="4 4"/>
-                                <text x="30" y="50" fill="white" font-size="16" font-weight="bold">The Light House</text>
-                                <text x="30" y="75" fill="#a0aec0" font-size="12">단독주택 | 2024</text>
+                                <rect width="400" height="300" fill="#1e1e1a"/>
+                                <path d="M50 250 L200 80 L350 250 Z" fill="#2d2d26"/>
+                                <rect x="150" y="180" width="100" height="70" fill="#c5bfae" opacity="0.3"/>
+                                <line x1="200" y1="80" x2="200" y2="250" stroke="#b4a284" stroke-width="1" stroke-dasharray="3 3"/>
+                                <text x="350" y="50" fill="#b4a284" font-size="20" font-family="Syne" font-weight="bold" text-anchor="end">01</text>
                             </svg>
-                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                <span class="px-5 py-2.5 border border-white text-white text-[10px] tracking-widest font-bold uppercase">VIEW CASE STUDY</span>
+                            <div class="absolute inset-0 bg-arch-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span class="px-6 py-3 border border-white text-white text-[10px] tracking-[0.3em] font-bold uppercase backdrop-blur-sm">CASE STUDY // OPEN</span>
                             </div>
                         </div>
-                        <div class="p-6 space-y-2">
-                            <span class="text-[10px] font-bold tracking-widest uppercase text-neutral-400">RESIDENTIAL</span>
-                            <h3 class="text-lg font-bold group-hover:text-neutral-500 transition-colors">빛의 집 (The Light House)</h3>
-                            <p class="text-xs text-arch-500 dark:text-arch-400 font-light line-clamp-2">자연광을 극대화한 미니멀리즘 설계로 지어진 경기 양평의 단독주택 프로젝트입니다. 노출콘크리트와 통유리를 활용해 실내외의 유기적 흐름을 구현했습니다.</p>
+                        <div class="p-8 space-y-4">
+                            <div class="flex justify-between items-center text-[9px] font-mono text-bronze-default">
+                                <span class="font-bold">RESIDENTIAL</span>
+                                <span>SCALE 1:100</span>
+                            </div>
+                            <h3 class="editorial-font text-xl font-extrabold group-hover:text-bronze-default transition-colors text-arch-900 dark:text-white">빛의 집 (The Light House)</h3>
+                            <p class="text-xs text-arch-500 dark:text-arch-400 font-light leading-relaxed line-clamp-2">자연광을 극대화한 양평의 노출콘크리트 단독주택 설계로, 조형미와 안온함을 가득 채운 사색적 주거 모델입니다.</p>
                         </div>
                     </div>
 
-                    <!-- Project 2 -->
-                    <div class="project-card group cursor-pointer bg-arch-50 dark:bg-arch-900 border border-arch-100 dark:border-arch-800 overflow-hidden rounded-sm transition-all hover:shadow-lg" data-category="commercial" onclick="openProjectModal(2)">
-                        <div class="relative aspect-[4/3] overflow-hidden">
+                    <!-- Card 2 (Commercial) -->
+                    <div class="project-card group cursor-pointer bg-arch-50 dark:bg-arch-900 border border-arch-200/50 dark:border-arch-800 overflow-hidden rounded-sm transition-all duration-500 hover:shadow-2xl" data-category="commercial" onclick="openProjectModal(2)">
+                        <div class="relative aspect-[4/3] overflow-hidden bg-neutral-900">
                             <svg class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="400" height="300" fill="#1a202c"/>
-                                <rect x="50" y="80" width="300" height="170" fill="#2d3748" rx="5"/>
-                                <rect x="90" y="120" width="70" height="130" fill="#4a5568"/>
-                                <rect x="240" y="120" width="70" height="130" fill="#4a5568"/>
-                                <line x1="50" y1="210" x2="350" y2="210" stroke="#718096" stroke-width="2"/>
-                                <text x="30" y="50" fill="white" font-size="16" font-weight="bold">Floating Box Gallery</text>
-                                <text x="30" y="75" fill="#a0aec0" font-size="12">갤러리 오피스 | 2023</text>
+                                <rect width="400" height="300" fill="#111111"/>
+                                <rect x="50" y="80" width="300" height="170" fill="#222" rx="2" stroke="#444"/>
+                                <rect x="90" y="120" width="70" height="130" fill="#333"/>
+                                <rect x="240" y="120" width="70" height="130" fill="#b4a284" opacity="0.4"/>
+                                <text x="350" y="50" fill="#b4a284" font-size="20" font-family="Syne" font-weight="bold" text-anchor="end">02</text>
                             </svg>
-                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                <span class="px-5 py-2.5 border border-white text-white text-[10px] tracking-widest font-bold uppercase">VIEW CASE STUDY</span>
+                            <div class="absolute inset-0 bg-arch-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span class="px-6 py-3 border border-white text-white text-[10px] tracking-[0.3em] font-bold uppercase backdrop-blur-sm">CASE STUDY // OPEN</span>
                             </div>
                         </div>
-                        <div class="p-6 space-y-2">
-                            <span class="text-[10px] font-bold tracking-widest uppercase text-neutral-400">COMMERCIAL</span>
-                            <h3 class="text-lg font-bold group-hover:text-neutral-500 transition-colors">플로팅 박스 갤러리</h3>
-                            <p class="text-xs text-arch-500 dark:text-arch-400 font-light line-clamp-2">지반으로부터 띄워진 하부 필로티를 통해 공공 보행로를 확보하고 내부로는 열린 전시 공간을 기획한 서울 한남동의 복합 문화/오피스 설계입니다.</p>
+                        <div class="p-8 space-y-4">
+                            <div class="flex justify-between items-center text-[9px] font-mono text-bronze-default">
+                                <span class="font-bold">COMMERCIAL</span>
+                                <span>SCALE 1:200</span>
+                            </div>
+                            <h3 class="editorial-font text-xl font-extrabold group-hover:text-bronze-default transition-colors text-arch-900 dark:text-white">플로팅 박스 갤러리</h3>
+                            <p class="text-xs text-arch-500 dark:text-arch-400 font-light leading-relaxed line-clamp-2">한남동의 좁은 대지에 하부 필로티와 거대한 캔틸레버 구조물을 기획하여 보행자 공간과 갤러리 동선을 분리한 공간입니다.</p>
                         </div>
                     </div>
 
-                    <!-- Project 3 -->
-                    <div class="project-card group cursor-pointer bg-arch-50 dark:bg-arch-900 border border-arch-100 dark:border-arch-800 overflow-hidden rounded-sm transition-all hover:shadow-lg" data-category="public" onclick="openProjectModal(3)">
-                        <div class="relative aspect-[4/3] overflow-hidden">
+                    <!-- Card 3 (Public) -->
+                    <div class="project-card group cursor-pointer bg-arch-50 dark:bg-arch-900 border border-arch-200/50 dark:border-arch-800 overflow-hidden rounded-sm transition-all duration-500 hover:shadow-2xl" data-category="public" onclick="openProjectModal(3)">
+                        <div class="relative aspect-[4/3] overflow-hidden bg-neutral-900">
                             <svg class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="400" height="300" fill="#2d3748"/>
-                                <path d="M50 250 Q200 50 350 250" stroke="#cbd5e0" stroke-width="8" fill="none"/>
-                                <path d="M100 250 L100 170" stroke="#718096" stroke-width="2"/>
-                                <path d="M200 250 L200 150" stroke="#718096" stroke-width="2"/>
-                                <path d="M300 250 L300 170" stroke="#718096" stroke-width="2"/>
-                                <text x="30" y="50" fill="white" font-size="16" font-weight="bold">Monolith Library</text>
-                                <text x="30" y="75" fill="#a0aec0" font-size="12">도서관 공모전 당선작 | 2022</text>
+                                <rect width="400" height="300" fill="#15171a"/>
+                                <path d="M50 250 Q200 50 350 250" stroke="#b4a284" stroke-width="4" fill="none" opacity="0.6"/>
+                                <circle cx="200" cy="150" r="50" fill="#2d3748" opacity="0.3"/>
+                                <text x="350" y="50" fill="#b4a284" font-size="20" font-family="Syne" font-weight="bold" text-anchor="end">03</text>
                             </svg>
-                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                <span class="px-5 py-2.5 border border-white text-white text-[10px] tracking-widest font-bold uppercase">VIEW CASE STUDY</span>
+                            <div class="absolute inset-0 bg-arch-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span class="px-6 py-3 border border-white text-white text-[10px] tracking-[0.3em] font-bold uppercase backdrop-blur-sm">CASE STUDY // OPEN</span>
                             </div>
                         </div>
-                        <div class="p-6 space-y-2">
-                            <span class="text-[10px] font-bold tracking-widest uppercase text-neutral-400">PUBLIC</span>
-                            <h3 class="text-lg font-bold group-hover:text-neutral-500 transition-colors">모놀리스 시립도서관</h3>
-                            <p class="text-xs text-arch-500 dark:text-arch-400 font-light line-clamp-2">곡선형 보이드가 건물 전체를 관통하며 자연 채광을 지하층까지 공급하는 환경 친화적 열린 문화센터 설계입니다.</p>
+                        <div class="p-8 space-y-4">
+                            <div class="flex justify-between items-center text-[9px] font-mono text-bronze-default">
+                                <span class="font-bold">PUBLIC</span>
+                                <span>SCALE 1:500</span>
+                            </div>
+                            <h3 class="editorial-font text-xl font-extrabold group-hover:text-bronze-default transition-colors text-arch-900 dark:text-white">모놀리스 시립도서관</h3>
+                            <p class="text-xs text-arch-500 dark:text-arch-400 font-light leading-relaxed line-clamp-2">곡선형 보이드를 관통시켜 빛을 아래층까지 은은하게 확산하고, 주민의 우연한 교류를 주도하는 공공도서관입니다.</p>
                         </div>
                     </div>
 
-                    <!-- Project 4 -->
-                    <div class="project-card group cursor-pointer bg-arch-50 dark:bg-arch-900 border border-arch-100 dark:border-arch-800 overflow-hidden rounded-sm transition-all hover:shadow-lg" data-category="residential" onclick="openProjectModal(4)">
-                        <div class="relative aspect-[4/3] overflow-hidden">
+                    <!-- Card 4 (Residential) -->
+                    <div class="project-card group cursor-pointer bg-arch-50 dark:bg-arch-900 border border-arch-200/50 dark:border-arch-800 overflow-hidden rounded-sm transition-all duration-500 hover:shadow-2xl" data-category="residential" onclick="openProjectModal(4)">
+                        <div class="relative aspect-[4/3] overflow-hidden bg-neutral-900">
                             <svg class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="400" height="300" fill="#4a5568"/>
-                                <rect x="80" y="80" width="240" height="150" fill="#2d3748"/>
-                                <line x1="80" y1="150" x2="320" y2="150" stroke="#e2e8f0" stroke-width="1"/>
-                                <line x1="160" y1="80" x2="160" y2="230" stroke="#e2e8f0" stroke-width="1"/>
-                                <text x="30" y="50" fill="white" font-size="16" font-weight="bold">Forest Villa</text>
-                                <text x="30" y="75" fill="#a0aec0" font-size="12">타운하우스 설계 | 2022</text>
+                                <rect width="400" height="300" fill="#1d1e1c"/>
+                                <rect x="80" y="80" width="240" height="150" fill="#292a27"/>
+                                <line x1="80" y1="150" x2="320" y2="150" stroke="#b4a284" stroke-width="0.5"/>
+                                <line x1="160" y1="80" x2="160" y2="230" stroke="#555" stroke-width="0.5"/>
+                                <text x="350" y="50" fill="#b4a284" font-size="20" font-family="Syne" font-weight="bold" text-anchor="end">04</text>
                             </svg>
-                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                <span class="px-5 py-2.5 border border-white text-white text-[10px] tracking-widest font-bold uppercase">VIEW CASE STUDY</span>
+                            <div class="absolute inset-0 bg-arch-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span class="px-6 py-3 border border-white text-white text-[10px] tracking-[0.3em] font-bold uppercase backdrop-blur-sm">CASE STUDY // OPEN</span>
                             </div>
                         </div>
-                        <div class="p-6 space-y-2">
-                            <span class="text-[10px] font-bold tracking-widest uppercase text-neutral-400">RESIDENTIAL</span>
-                            <h3 class="text-lg font-bold group-hover:text-neutral-500 transition-colors">숲속의 요람 (Forest Villa)</h3>
-                            <p class="text-xs text-arch-500 dark:text-arch-400 font-light line-clamp-2">숲의 지형적 굴곡을 훼손하지 않고, 자연 경사면을 따라 단차가 어우러지게 설계한 친자연적 숲속 주택 프로젝트입니다.</p>
+                        <div class="p-8 space-y-4">
+                            <div class="flex justify-between items-center text-[9px] font-mono text-bronze-default">
+                                <span class="font-bold">RESIDENTIAL</span>
+                                <span>SCALE 1:150</span>
+                            </div>
+                            <h3 class="editorial-font text-xl font-extrabold group-hover:text-bronze-default transition-colors text-arch-900 dark:text-white">숲속의 요람 (Forest Villa)</h3>
+                            <p class="text-xs text-arch-500 dark:text-arch-400 font-light leading-relaxed line-clamp-2">숲의 지형적 경사를 그대로 보존한 채, 단계적인 입체적 매스를 쌓아 올려 주변 수목과 조화를 이루는 단독주택 빌라입니다.</p>
                         </div>
                     </div>
 
-                    <!-- Project 5 -->
-                    <div class="project-card group cursor-pointer bg-arch-50 dark:bg-arch-900 border border-arch-100 dark:border-arch-800 overflow-hidden rounded-sm transition-all hover:shadow-lg" data-category="commercial" onclick="openProjectModal(5)">
-                        <div class="relative aspect-[4/3] overflow-hidden">
+                    <!-- Card 5 (Commercial) -->
+                    <div class="project-card group cursor-pointer bg-arch-50 dark:bg-arch-900 border border-arch-200/50 dark:border-arch-800 overflow-hidden rounded-sm transition-all duration-500 hover:shadow-2xl" data-category="commercial" onclick="openProjectModal(5)">
+                        <div class="relative aspect-[4/3] overflow-hidden bg-neutral-900">
                             <svg class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="400" height="300" fill="#1a1a1a"/>
-                                <rect x="100" y="50" width="80" height="200" fill="#333333"/>
-                                <rect x="220" y="100" width="80" height="150" fill="#4d4d4d"/>
-                                <line x1="0" y1="250" x2="400" y2="250" stroke="gray" stroke-width="4"/>
-                                <text x="30" y="40" fill="white" font-size="16" font-weight="bold">Vertical Wave Complex</text>
-                                <text x="30" y="65" fill="#a3a3a3" font-size="12">근린생활시설 | 2021</text>
+                                <rect width="400" height="300" fill="#111"/>
+                                <rect x="100" y="50" width="80" height="200" fill="#222" stroke="#333"/>
+                                <rect x="220" y="100" width="80" height="150" fill="#b4a284" opacity="0.3"/>
+                                <line x1="0" y1="250" x2="400" y2="250" stroke="#444" stroke-width="2"/>
+                                <text x="350" y="50" fill="#b4a284" font-size="20" font-family="Syne" font-weight="bold" text-anchor="end">05</text>
                             </svg>
-                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                <span class="px-5 py-2.5 border border-white text-white text-[10px] tracking-widest font-bold uppercase">VIEW CASE STUDY</span>
+                            <div class="absolute inset-0 bg-arch-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span class="px-6 py-3 border border-white text-white text-[10px] tracking-[0.3em] font-bold uppercase backdrop-blur-sm">CASE STUDY // OPEN</span>
                             </div>
                         </div>
-                        <div class="p-6 space-y-2">
-                            <span class="text-[10px] font-bold tracking-widest uppercase text-neutral-400">COMMERCIAL</span>
-                            <h3 class="text-lg font-bold group-hover:text-neutral-500 transition-colors">버티컬 웨이브 복합시설</h3>
-                            <p class="text-xs text-arch-500 dark:text-arch-400 font-light line-clamp-2">파동에서 영감을 얻은 전면부의 테라스 모듈러 구조를 통해 도심 속에 활기찬 미장센을 보여주는 입체적 상업 빌딩입니다.</p>
+                        <div class="p-8 space-y-4">
+                            <div class="flex justify-between items-center text-[9px] font-mono text-bronze-default">
+                                <span class="font-bold">COMMERCIAL</span>
+                                <span>SCALE 1:250</span>
+                            </div>
+                            <h3 class="editorial-font text-xl font-extrabold group-hover:text-bronze-default transition-colors text-arch-900 dark:text-white">버티컬 웨이브 복합시설</h3>
+                            <p class="text-xs text-arch-500 dark:text-arch-400 font-light leading-relaxed line-clamp-2">파도의 출렁거림을 연상케하는 유려한 스킨 디자인을 통해 지상 층마다 리드미컬하게 변화하는 시선을 담은 부산 해운대 카페 빌딩입니다.</p>
                         </div>
                     </div>
 
-                    <!-- Project 6 -->
-                    <div class="project-card group cursor-pointer bg-arch-50 dark:bg-arch-900 border border-arch-100 dark:border-arch-800 overflow-hidden rounded-sm transition-all hover:shadow-lg" data-category="public" onclick="openProjectModal(6)">
-                        <div class="relative aspect-[4/3] overflow-hidden">
+                    <!-- Card 6 (Public) -->
+                    <div class="project-card group cursor-pointer bg-arch-50 dark:bg-arch-900 border border-arch-200/50 dark:border-arch-800 overflow-hidden rounded-sm transition-all duration-500 hover:shadow-2xl" data-category="public" onclick="openProjectModal(6)">
+                        <div class="relative aspect-[4/3] overflow-hidden bg-neutral-900">
                             <svg class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="400" height="300" fill="#2d3748"/>
-                                <line x1="50" y1="50" x2="350" y2="250" stroke="#cbd5e0" stroke-width="3"/>
-                                <line x1="50" y1="250" x2="350" y2="50" stroke="#cbd5e0" stroke-width="1"/>
-                                <circle cx="200" cy="150" r="60" fill="#4a5568" stroke="#cbd5e0" stroke-width="2"/>
-                                <text x="30" y="40" fill="white" font-size="16" font-weight="bold">Intersection Pavilion</text>
-                                <text x="30" y="65" fill="#a0aec0" font-size="12">파빌리온 기획 | 2021</text>
+                                <rect width="400" height="300" fill="#141416"/>
+                                <line x1="50" y1="50" x2="350" y2="250" stroke="#333" stroke-width="1"/>
+                                <circle cx="200" cy="150" r="60" fill="#b4a284" opacity="0.3" stroke="#b4a284" stroke-width="1"/>
+                                <text x="350" y="50" fill="#b4a284" font-size="20" font-family="Syne" font-weight="bold" text-anchor="end">06</text>
                             </svg>
-                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                <span class="px-5 py-2.5 border border-white text-white text-[10px] tracking-widest font-bold uppercase">VIEW CASE STUDY</span>
+                            <div class="absolute inset-0 bg-arch-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span class="px-6 py-3 border border-white text-white text-[10px] tracking-[0.3em] font-bold uppercase backdrop-blur-sm">CASE STUDY // OPEN</span>
                             </div>
                         </div>
-                        <div class="p-6 space-y-2">
-                            <span class="text-[10px] font-bold tracking-widest uppercase text-neutral-400">PUBLIC</span>
-                            <h3 class="text-lg font-bold group-hover:text-neutral-500 transition-colors">교차로의 열린 파빌리온</h3>
-                            <p class="text-xs text-arch-500 dark:text-arch-400 font-light line-clamp-2">도심 속 공원에서 시민들이 잠시 머물며 하늘을 마주할 수 있게 설계한 원형 철골 구조 파빌리온입니다.</p>
+                        <div class="p-8 space-y-4">
+                            <div class="flex justify-between items-center text-[9px] font-mono text-bronze-default">
+                                <span class="font-bold">PUBLIC</span>
+                                <span>SCALE 1:50</span>
+                            </div>
+                            <h3 class="editorial-font text-xl font-extrabold group-hover:text-bronze-default transition-colors text-arch-900 dark:text-white">교차로의 열린 파빌리온</h3>
+                            <p class="text-xs text-arch-500 dark:text-arch-400 font-light leading-relaxed line-clamp-2">여의도 공원의 동선 교차로에 임시 설치된 기하학 거울 구조 파빌리온으로, 바쁜 시민들이 하늘의 푸르름을 투영해 마주하는 쉼터입니다.</p>
                         </div>
                     </div>
+
                 </div>
 
             </div>
         </section>
 
-        <!-- ARCHIVE & SCENIC SKETCHES (INSPIRATION STREAM) -->
-        <section id="archive" class="py-24 px-6 max-w-7xl mx-auto">
-            <div class="space-y-4 mb-16 text-center lg:text-left">
-                <p class="text-xs font-bold tracking-[0.4em] text-neutral-400 uppercase">Process & Archive</p>
-                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">아이디어 아카이브</h2>
-                <p class="text-xs md:text-sm text-arch-500 dark:text-arch-400 font-light max-w-xl">
-                    도면의 이면에 있는 무수한 스케치, 모형 제작, 3D 렌더링 과정 등 공간의 완성에 이르는 날것 그대로 of 생각의 흔적들을 공유합니다.
+        <!-- PROCESS & ARCHIVE (Minimal Technical Drawing Aesthetic) -->
+        <section id="archive" class="py-32 px-6 lg:px-16 max-w-7xl mx-auto">
+            <div class="flex flex-col lg:flex-row items-start justify-between gap-12 mb-20">
+                <div class="space-y-4 max-w-xl">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-8 h-[1px] bg-bronze-default"></span>
+                        <span class="text-[10px] font-mono tracking-[0.35em] text-bronze-default uppercase font-bold">RAW MATERIAL // ARCHIVE</span>
+                    </div>
+                    <h2 class="heading-font text-4xl md:text-5xl font-black tracking-tight leading-none text-arch-900 dark:text-white">생각의 흔적들.</h2>
+                </div>
+                <p class="text-xs md:text-sm text-arch-500 dark:text-arch-400 font-light max-w-md leading-relaxed self-end">
+                    평면과 단면을 도출하기 이전, 아이디어 스케치와 대지의 등고 분석, 목업 모형 실험 등 공간의 본질적인 원형을 조립해 가던 날것 그대로의 과정을 아카이빙합니다.
                 </p>
             </div>
 
-            <!-- Archive Masonry-like Grid -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <!-- Archive Item 1 -->
-                <div class="relative group overflow-hidden aspect-square bg-arch-100 dark:bg-arch-800 rounded-sm">
-                    <svg class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="200" height="200" fill="#333333"/>
-                        <path d="M10 10 L190 190 M10 190 L190 10" stroke="#666" stroke-width="1"/>
-                        <circle cx="100" cy="100" r="50" fill="none" stroke="#999" stroke-width="1" stroke-dasharray="2 2"/>
-                        <text x="20" y="30" fill="white" font-size="12" font-family="monospace">#SKETCH-01</text>
+            <!-- Fine Minimal Grid Layout -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- Archive Card 1 -->
+                <div class="relative group overflow-hidden aspect-square bg-[#151515] border border-arch-200/50 dark:border-arch-800 rounded-sm">
+                    <svg class="w-full h-full object-cover grayscale opacity-70 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-700" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="200" height="200" fill="#1c1c18"/>
+                        <path d="M10 10 L190 190 M10 190 L190 10" stroke="#555" stroke-width="0.5"/>
+                        <circle cx="100" cy="100" r="60" fill="none" stroke="#b4a284" stroke-width="0.5" stroke-dasharray="2 2"/>
+                        <text x="20" y="30" fill="#fff" font-size="10" font-family="monospace">#SKETCH_01_RAW</text>
                     </svg>
-                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
-                        <h4 class="text-xs font-bold text-white uppercase">기하학 평면 스케치</h4>
-                        <span class="text-[9px] text-neutral-300">Hand drawing, 2024</span>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
+                        <h4 class="text-xs font-bold text-white uppercase tracking-wider">기하학 평면 구성</h4>
+                        <span class="text-[9px] text-neutral-400 font-mono mt-1">Hand drawing, 2024</span>
                     </div>
                 </div>
-                <!-- Archive Item 2 -->
-                <div class="relative group overflow-hidden aspect-square bg-arch-100 dark:bg-arch-800 rounded-sm">
-                    <svg class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="200" height="200" fill="#222"/>
-                        <rect x="50" y="50" width="100" height="100" fill="none" stroke="#555" stroke-width="2"/>
-                        <rect x="70" y="70" width="60" height="60" fill="none" stroke="#777" stroke-width="1"/>
-                        <text x="20" y="30" fill="white" font-size="12" font-family="monospace">#MODEL-05</text>
+                
+                <!-- Archive Card 2 -->
+                <div class="relative group overflow-hidden aspect-square bg-[#151515] border border-arch-200/50 dark:border-arch-800 rounded-sm">
+                    <svg class="w-full h-full object-cover grayscale opacity-70 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-700" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="200" height="200" fill="#18181a"/>
+                        <rect x="50" y="50" width="100" height="100" fill="none" stroke="#444" stroke-width="1"/>
+                        <rect x="75" y="75" width="50" height="50" fill="none" stroke="#b4a284" stroke-width="0.5"/>
+                        <text x="20" y="30" fill="#fff" font-size="10" font-family="monospace">#MOCK_05_BALSA</text>
                     </svg>
-                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
-                        <h4 class="text-xs font-bold text-white uppercase">발사우드 모형 실험</h4>
-                        <span class="text-[9px] text-neutral-300">Balsa Wood Study, 2023</span>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
+                        <h4 class="text-xs font-bold text-white uppercase tracking-wider">Balsa 모형 제작 실험</h4>
+                        <span class="text-[9px] text-neutral-400 font-mono mt-1">Physical Scale Study, 2023</span>
                     </div>
                 </div>
-                <!-- Archive Item 3 -->
-                <div class="relative group overflow-hidden aspect-square bg-arch-100 dark:bg-arch-800 rounded-sm">
-                    <svg class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="200" height="200" fill="#444"/>
-                        <path d="M10 150 C 50 100, 150 100, 190 150" fill="none" stroke="#888" stroke-width="2"/>
-                        <text x="20" y="30" fill="white" font-size="12" font-family="monospace">#SITE-RECON</text>
+
+                <!-- Archive Card 3 -->
+                <div class="relative group overflow-hidden aspect-square bg-[#151515] border border-arch-200/50 dark:border-arch-800 rounded-sm">
+                    <svg class="w-full h-full object-cover grayscale opacity-70 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-700" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="200" height="200" fill="#131513"/>
+                        <path d="M10 170 Q 50 120, 100 150 T 190 130" fill="none" stroke="#555" stroke-width="1"/>
+                        <path d="M10 160 Q 50 110, 100 140 T 190 120" fill="none" stroke="#b4a284" stroke-width="0.5" stroke-dasharray="2 2"/>
+                        <text x="20" y="30" fill="#fff" font-size="10" font-family="monospace">#TOPO_ANALYSIS</text>
                     </svg>
-                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
-                        <h4 class="text-xs font-bold text-white uppercase">대지 고저차 등고선 분석</h4>
-                        <span class="text-[9px] text-neutral-300">Topo Map Analysis, 2023</span>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
+                        <h4 class="text-xs font-bold text-white uppercase tracking-wider">대지 등고 고저차 분석</h4>
+                        <span class="text-[9px] text-neutral-400 font-mono mt-1">Topo-Analysis, 2023</span>
                     </div>
                 </div>
-                <!-- Archive Item 4 -->
-                <div class="relative group overflow-hidden aspect-square bg-arch-100 dark:bg-arch-800 rounded-sm">
-                    <svg class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="200" height="200" fill="#1b1b1b"/>
+
+                <!-- Archive Card 4 -->
+                <div class="relative group overflow-hidden aspect-square bg-[#151515] border border-arch-200/50 dark:border-arch-800 rounded-sm">
+                    <svg class="w-full h-full object-cover grayscale opacity-70 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-700" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="200" height="200" fill="#141414"/>
                         <circle cx="100" cy="100" r="70" fill="none" stroke="#333" stroke-width="1"/>
-                        <polygon points="100,30 160,150 40,150" fill="none" stroke="#999" stroke-width="2"/>
-                        <text x="20" y="30" fill="white" font-size="12" font-family="monospace">#PARAMETRIC</text>
+                        <polygon points="100,30 170,140 30,140" fill="none" stroke="#b4a284" stroke-width="0.5"/>
+                        <text x="20" y="30" fill="#fff" font-size="10" font-family="monospace">#SCRPT_PARAM</text>
                     </svg>
-                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
-                        <h4 class="text-xs font-bold text-white uppercase">파라메트릭 외피 디테일</h4>
-                        <span class="text-[9px] text-neutral-300">Grasshopper script, 2024</span>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
+                        <h4 class="text-xs font-bold text-white uppercase tracking-wider">파라메트릭 프레임 로직</h4>
+                        <span class="text-[9px] text-neutral-400 font-mono mt-1">Grasshopper, 2024</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- GUESTBOOK SECTION (Padlet Integration) -->
-        <section id="guestbook" class="py-24 bg-white dark:bg-arch-950/40 border-t border-b border-arch-100 dark:border-arch-800">
-            <div class="max-w-7xl mx-auto px-6">
-                <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <!-- GUESTBOOK SECTION (Padlet Integration with Fallback & Guide) -->
+        <section id="guestbook" class="py-32 bg-white dark:bg-arch-950/20 border-t border-b border-arch-200/50 dark:border-arch-800/50">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12">
+                <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16">
                     <div class="space-y-4">
-                        <p class="text-xs font-bold tracking-[0.4em] text-neutral-400 uppercase">Interactive Guestbook</p>
-                        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">실시간 패들렛 방명록</h2>
-                        <div class="h-1 w-12 bg-arch-900 dark:bg-white"></div>
-                        <p class="text-sm text-arch-500 dark:text-arch-400 font-light max-w-2xl leading-relaxed">
-                            방문해주신 소중한 발걸음을 기록해주세요. Padlet 서비스를 통해 텍스트뿐만 아니라 스케치, 이미지, 링크 등 영감이 가득한 다양한 형태의 피드백과 안부를 즉시 남겨보실 수 있습니다.
+                        <div class="flex items-center space-x-2">
+                            <span class="w-8 h-[1px] bg-bronze-default"></span>
+                            <span class="text-[10px] font-mono tracking-[0.35em] text-bronze-default uppercase font-bold">DIGITAL GUESTBOOK BOARD</span>
+                        </div>
+                        <h2 class="heading-font text-4xl md:text-5xl font-black tracking-tight leading-none text-arch-900 dark:text-white">실시간 패들렛 방명록.</h2>
+                        <p class="text-xs md:text-sm text-arch-500 dark:text-arch-400 font-light max-w-2xl leading-relaxed">
+                            방문자 한 분 한 분의 생각이 공간의 또 다른 재료가 됩니다. 패들렛 서비스를 연계하여, 설계에 관한 솔직한 피드백이나 자유로운 흔적들을 미디어 형태로 마음껏 게시해 주시기 바랍니다.
                         </p>
                     </div>
                     
-                    <!-- Open in New Tab Button -->
+                    <!-- Premium Open Link Button -->
                     <div class="flex-shrink-0">
-                        <a href="https://padlet.com/sdfmkustgbu/padlet-s04598vu3zfyicjj" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 border border-arch-900 dark:border-white hover:bg-arch-900 hover:text-white dark:hover:bg-white dark:hover:text-arch-900 transition-all text-xs font-bold tracking-widest uppercase rounded-sm">
+                        <a href="https://padlet.com/sdfmkustgbu/padlet-s04598vu3zfyicjj" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-3 px-8 py-4 bg-arch-900 text-white dark:bg-white dark:text-arch-900 transition-all duration-300 text-[10px] font-bold tracking-[0.25em] uppercase rounded-sm hover:bg-bronze-default hover:text-white">
                             <span>Padlet 새창에서 열기</span>
-                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            <i class="fa-solid fa-arrow-up-right-from-square transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"></i>
                         </a>
                     </div>
                 </div>
 
-                <!-- Padlet Embed Frame -->
-                <div class="w-full bg-arch-50 dark:bg-arch-900 rounded-lg p-1.5 md:p-3 border border-arch-100 dark:border-arch-800 shadow-sm">
-                    <div class="relative w-full h-[600px] rounded-md overflow-hidden bg-[#fafafa]">
+                <!-- Embedded Canvas Container with Fallback Guide inside -->
+                <div class="w-full bg-arch-50 dark:bg-arch-900 rounded-sm p-2 md:p-4 border border-arch-200 dark:border-arch-800 shadow-2xl relative">
+                    
+                    <!-- Fallback Notice: 이 영역은 iframe 로드에 실패하거나 브라우저 쿠키/추적 정책에 의해 패들렛이 가로막혔을 때 유저에게 안내를 제안합니다. -->
+                    <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-arch-100/90 dark:bg-arch-900/90 z-0">
+                        <div class="max-w-md space-y-4">
+                            <div class="w-12 h-12 rounded-full border border-bronze-default/50 flex items-center justify-center mx-auto text-bronze-default">
+                                <i class="fa-solid fa-circle-exclamation text-lg"></i>
+                            </div>
+                            <h3 class="font-bold text-sm text-arch-900 dark:text-white">패들렛 방명록 연결 안내</h3>
+                            <p class="text-xs text-arch-500 dark:text-arch-400 font-light leading-relaxed">
+                                일부 브라우저의 개인정보 보호 또는 콘텐츠 차단 설정 때문에 내부 화면이 표시되지 않을 수 있습니다. 아래의 직접 가기 버튼을 이용하시면 쾌적하게 작성하실 수 있습니다.
+                            </p>
+                            <a href="https://padlet.com/sdfmkustgbu/padlet-s04598vu3zfyicjj" target="_blank" rel="noopener noreferrer" class="inline-block px-5 py-2.5 bg-bronze-default text-white hover:bg-bronze-dark text-[10px] font-bold tracking-wider uppercase rounded-sm transition-all">
+                                방명록 직접 작성하기 <i class="fa-solid fa-chevron-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Actual Iframe loaded above (z-10) -->
+                    <div class="relative w-full h-[620px] bg-neutral-50 dark:bg-neutral-900 overflow-hidden z-10">
                         <iframe src="https://padlet.com/embed/sdfmkustgbu/padlet-s04598vu3zfyicjj" 
                                 frameborder="0" 
                                 allow="camera; microphone; geolocation" 
@@ -581,106 +717,109 @@
             </div>
         </section>
 
-        <!-- CONTACT SECTION -->
-        <section id="contact" class="py-24 bg-arch-900 text-white dark:bg-arch-950/80 border-t border-arch-800">
-            <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <!-- CONTACT SECTION (Clean Grid & Modern Drafting Block) -->
+        <section id="contact" class="py-32 bg-arch-900 text-white dark:bg-arch-950/80 border-t border-arch-800 relative">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-12 gap-16">
                 
-                <!-- Contact Info Left -->
-                <div class="lg:col-span-5 space-y-8">
+                <!-- Contact Info Left Column -->
+                <div class="lg:col-span-5 space-y-12">
                     <div class="space-y-4">
-                        <p class="text-xs font-bold tracking-[0.4em] text-neutral-500 uppercase">Work With Us</p>
-                        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">프로젝트 의뢰 및 협업</h2>
-                        <p class="text-sm text-neutral-400 font-light leading-relaxed">
-                            공간에 대한 소소한 고민부터 대형 프로젝트 설계 의뢰까지, 마음을 담아 함께 풀어갑니다. 아래 정보를 통해 편하게 전화를 주시거나 메일을 남겨주시면 성심성의껏 답변드리겠습니다.
+                        <div class="flex items-center space-x-2">
+                            <span class="w-8 h-[1px] bg-bronze-default"></span>
+                            <span class="text-[10px] font-mono tracking-[0.35em] text-bronze-default uppercase font-bold">CONTACT INFO</span>
+                        </div>
+                        <h2 class="heading-font text-4xl md:text-5xl font-black tracking-tight leading-none text-white">협업 및 의뢰.</h2>
+                        <p class="text-xs md:text-sm text-neutral-400 font-light leading-relaxed">
+                            건축이란 사람의 일생을 관통하는 장소를 짓는 숭고한 약속입니다. 대지의 조건, 예산, 원하시는 구조체의 지향점을 상세히 나눠주시면 정교한 분석과 함께 대화를 시작해 드리겠습니다.
                         </p>
                     </div>
 
-                    <div class="space-y-4 text-xs tracking-wider">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 bg-neutral-800 rounded-full flex items-center justify-center text-sm">
-                                <i class="fa-solid fa-map-location-dot"></i>
+                    <div class="space-y-6 text-xs tracking-wider">
+                        <div class="flex items-center gap-5 group">
+                            <div class="w-12 h-12 border border-neutral-700/60 rounded-full flex items-center justify-center text-sm transition-colors group-hover:border-bronze-default">
+                                <i class="fa-solid fa-map-location-dot text-neutral-400 group-hover:text-bronze-default"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-neutral-400">STUDIO ADDRESS</h4>
-                                <p class="text-sm font-light mt-0.5">서울특별시 강남구 테헤란로 123 ARCHI-NEO 빌딩 4F</p>
+                                <h4 class="font-bold text-neutral-500 uppercase tracking-widest text-[9px] font-mono">STUDIO LOCATION</h4>
+                                <p class="text-xs font-light mt-1 text-neutral-200">서울특별시 강남구 테헤란로 123 ARCHI-NEO 빌딩 4F</p>
                             </div>
                         </div>
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 bg-neutral-800 rounded-full flex items-center justify-center text-sm">
-                                <i class="fa-solid fa-envelope"></i>
+                        <div class="flex items-center gap-5 group">
+                            <div class="w-12 h-12 border border-neutral-700/60 rounded-full flex items-center justify-center text-sm transition-colors group-hover:border-bronze-default">
+                                <i class="fa-solid fa-envelope text-neutral-400 group-hover:text-bronze-default"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-neutral-400">EMAIL</h4>
-                                <p class="text-sm font-light mt-0.5">contact@archi-neo.com</p>
+                                <h4 class="font-bold text-neutral-500 uppercase tracking-widest text-[9px] font-mono">E-MAIL INQUIRY</h4>
+                                <p class="text-xs font-light mt-1 text-neutral-200 hover:text-bronze-default transition-colors">contact@archi-neo.com</p>
                             </div>
                         </div>
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 bg-neutral-800 rounded-full flex items-center justify-center text-sm">
-                                <i class="fa-solid fa-phone"></i>
+                        <div class="flex items-center gap-5 group">
+                            <div class="w-12 h-12 border border-neutral-700/60 rounded-full flex items-center justify-center text-sm transition-colors group-hover:border-bronze-default">
+                                <i class="fa-solid fa-phone text-neutral-400 group-hover:text-bronze-default"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-neutral-400">PHONE</h4>
-                                <p class="text-sm font-light mt-0.5">+82 (0)2 1234 5678</p>
+                                <h4 class="font-bold text-neutral-500 uppercase tracking-widest text-[9px] font-mono">DIRECT CALL</h4>
+                                <p class="text-xs font-light mt-1 text-neutral-200">+82 (0)2 1234 5678</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Social Medias -->
-                    <div class="flex space-x-4 pt-4">
-                        <a href="#" class="w-10 h-10 bg-neutral-800 hover:bg-white hover:text-arch-900 transition-all rounded-full flex items-center justify-center" aria-label="Instagram">
-                            <i class="fa-brands fa-instagram"></i>
+                    <!-- Social Network Elements with luxury outline -->
+                    <div class="flex space-x-3 pt-4">
+                        <a href="#" class="w-12 h-12 border border-neutral-800 hover:border-bronze-default hover:text-bronze-default transition-all duration-300 rounded-full flex items-center justify-center" aria-label="Instagram">
+                            <i class="fa-brands fa-instagram text-sm"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-neutral-800 hover:bg-white hover:text-arch-900 transition-all rounded-full flex items-center justify-center" aria-label="Pinterest">
-                            <i class="fa-brands fa-pinterest"></i>
+                        <a href="#" class="w-12 h-12 border border-neutral-800 hover:border-bronze-default hover:text-bronze-default transition-all duration-300 rounded-full flex items-center justify-center" aria-label="Pinterest">
+                            <i class="fa-brands fa-pinterest text-sm"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-neutral-800 hover:bg-white hover:text-arch-900 transition-all rounded-full flex items-center justify-center" aria-label="LinkedIn">
-                            <i class="fa-brands fa-linkedin-in"></i>
+                        <a href="#" class="w-12 h-12 border border-neutral-800 hover:border-bronze-default hover:text-bronze-default transition-all duration-300 rounded-full flex items-center justify-center" aria-label="LinkedIn">
+                            <i class="fa-brands fa-linkedin-in text-sm"></i>
                         </a>
                     </div>
                 </div>
 
-                <!-- Contact Form Right -->
-                <div class="lg:col-span-7 bg-neutral-800/50 p-8 md:p-10 rounded-sm border border-neutral-700/50 backdrop-blur-sm">
+                <!-- Contact Form Right Block -->
+                <div class="lg:col-span-7 bg-neutral-950/40 p-8 md:p-12 rounded-sm border border-neutral-800 backdrop-blur-md">
                     <form id="contact-form" onsubmit="handleContactSubmit(event)" class="space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
-                                <label for="client-name" class="text-xs font-bold tracking-widest text-neutral-400 uppercase">성함 / 회사명 *</label>
-                                <input type="text" id="client-name" required class="w-full bg-neutral-900 border border-neutral-700 focus:border-white focus:ring-0 p-3.5 text-xs text-white transition-all outline-none rounded-sm" placeholder="홍길동 (길동건축)">
+                                <label for="client-name" class="text-[10px] font-mono tracking-widest text-neutral-400 uppercase font-bold">성함 / 회사명 *</label>
+                                <input type="text" id="client-name" required class="w-full bg-neutral-900 border border-neutral-800 focus:border-bronze-default p-4 text-xs text-white transition-all outline-none rounded-sm" placeholder="홍길동 (길동그룹)">
                             </div>
                             <div class="space-y-2">
-                                <label for="client-email" class="text-xs font-bold tracking-widest text-neutral-400 uppercase">이메일 주소 *</label>
-                                <input type="email" id="client-email" required class="w-full bg-neutral-900 border border-neutral-700 focus:border-white focus:ring-0 p-3.5 text-xs text-white transition-all outline-none rounded-sm" placeholder="email@example.com">
+                                <label for="client-email" class="text-[10px] font-mono tracking-widest text-neutral-400 uppercase font-bold">이메일 주소 *</label>
+                                <input type="email" id="client-email" required class="w-full bg-neutral-900 border border-neutral-800 focus:border-bronze-default p-4 text-xs text-white transition-all outline-none rounded-sm" placeholder="email@example.com">
                             </div>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
-                                <label for="project-type" class="text-xs font-bold tracking-widest text-neutral-400 uppercase">프로젝트 유형</label>
-                                <select id="project-type" class="w-full bg-neutral-900 border border-neutral-700 focus:border-white focus:ring-0 p-3.5 text-xs text-white transition-all outline-none rounded-sm">
+                                <label for="project-type" class="text-[10px] font-mono tracking-widest text-neutral-400 uppercase font-bold">프로젝트 범주</label>
+                                <select id="project-type" class="w-full bg-neutral-900 border border-neutral-800 focus:border-bronze-default p-4 text-xs text-white transition-all outline-none rounded-sm">
                                     <option value="residential">단독/공동 주택 설계</option>
-                                    <option value="commercial">근린생활/상업시설</option>
-                                    <option value="public">공공건축/공모전 협업</option>
-                                    <option value="interior">인테리어 및 리모델링</option>
-                                    <option value="other">기타 문의</option>
+                                    <option value="commercial">근린생활/상업 복합시설</option>
+                                    <option value="public">공공업무/문화공간 수립</option>
+                                    <option value="interior">인테리어 및 맞춤형 가구 리모델링</option>
+                                    <option value="other">기타 자문 및 제휴 문의</option>
                                 </select>
                             </div>
                             <div class="space-y-2">
-                                <label for="project-budget" class="text-xs font-bold tracking-widest text-neutral-400 uppercase">희망 착공 시기</label>
-                                <input type="text" id="project-budget" class="w-full bg-neutral-900 border border-neutral-700 focus:border-white focus:ring-0 p-3.5 text-xs text-white transition-all outline-none rounded-sm" placeholder="예: 3개월 이내 / 내년 상반기">
+                                <label for="project-budget" class="text-[10px] font-mono tracking-widest text-neutral-400 uppercase font-bold">희망 착공 시기</label>
+                                <input type="text" id="project-budget" class="w-full bg-neutral-900 border border-neutral-800 focus:border-bronze-default p-4 text-xs text-white transition-all outline-none rounded-sm" placeholder="예: 3개월 이내 / 내년 상반기">
                             </div>
                         </div>
 
                         <div class="space-y-2">
-                            <label for="message" class="text-xs font-bold tracking-widest text-neutral-400 uppercase">상세한 요구사항 및 프로젝트 설명 *</label>
-                            <textarea id="message" required rows="5" class="w-full bg-neutral-900 border border-neutral-700 focus:border-white focus:ring-0 p-3.5 text-xs text-white transition-all outline-none rounded-sm resize-none" placeholder="대지 위치, 규모, 구상하시는 공간 분위기 등을 편하게 남겨주세요."></textarea>
+                            <label for="message" class="text-[10px] font-mono tracking-widest text-neutral-400 uppercase font-bold">프로젝트 세부 설명 및 조건 *</label>
+                            <textarea id="message" required rows="5" class="w-full bg-neutral-900 border border-neutral-800 focus:border-bronze-default p-4 text-xs text-white transition-all outline-none rounded-sm resize-none" placeholder="지형 상황, 면적 규모 및 원하시는 공간감의 키워드에 대해 남겨주세요."></textarea>
                         </div>
 
-                        <!-- Feedback Message Box -->
+                        <!-- Feedback Box -->
                         <div id="form-feedback" class="hidden p-4 text-xs font-bold tracking-wider rounded-sm"></div>
 
-                        <button type="submit" class="w-full py-4 bg-white text-arch-900 hover:bg-neutral-200 text-xs font-bold tracking-[0.2em] uppercase transition-all rounded-sm flex items-center justify-center gap-2">
-                            <span>SEND ENQUIRY / 의뢰서 전송</span>
-                            <i class="fa-solid fa-paper-plane"></i>
+                        <button type="submit" class="w-full py-4.5 bg-white text-arch-900 hover:bg-bronze-default hover:text-white text-xs font-bold tracking-[0.25em] uppercase transition-all duration-300 rounded-sm flex items-center justify-center gap-3">
+                            <span>SEND SPECIFICATION // 전송</span>
+                            <i class="fa-solid fa-paper-plane text-xs"></i>
                         </button>
                     </form>
                 </div>
@@ -689,65 +828,67 @@
 
     </main>
 
-    <!-- FOOTER -->
-    <footer class="bg-arch-950 text-neutral-400 py-12 px-6 border-t border-arch-900 text-xs text-center md:text-left transition-colors">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="space-y-2">
-                <p class="font-bold text-white tracking-[0.2em]">KANG BYEONGHUN ARCHITECTS</p>
-                <p class="font-light">© 2026 KANG BYEONGHUN. All rights reserved. Registered Architect License No. 123-45-67890</p>
+    <!-- FOOTER (Studio Standard Copyright) -->
+    <footer class="bg-arch-950 text-neutral-500 py-16 px-6 lg:px-12 border-t border-neutral-900 text-xs text-center md:text-left transition-colors">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="space-y-3">
+                <p class="heading-font font-bold text-white tracking-[0.2em] text-sm">KANG BYEONGHUN ARCHITECTS</p>
+                <p class="font-light tracking-wide text-neutral-500 leading-relaxed">
+                    본 웹사이트 내 설계 디자인, 모델, 도면에 대한 저작권은 KANG BYEONGHUN ARCHITECTS에 귀속되어 있습니다.<br>
+                    © 2026 KANG BYEONGHUN. All rights reserved. Registered Architect License No. 123-45-67890
+                </p>
             </div>
-            <div class="flex space-x-6">
+            <div class="flex flex-wrap justify-center gap-6 text-[10px] tracking-wider uppercase font-mono">
                 <a href="#" class="hover:text-white transition-colors">이용약관</a>
                 <a href="#" class="hover:text-white transition-colors">개인정보처리방침</a>
-                <a href="#" class="hover:text-white transition-colors">공간설계 저작권 규정</a>
+                <a href="#" class="hover:text-white transition-colors">저작권 규정</a>
             </div>
         </div>
     </footer>
 
 
-    <!-- CASE STUDY MODAL -->
-    <div id="project-modal" class="fixed inset-0 z-[100] hidden overflow-y-auto bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-arch-900 text-arch-900 dark:text-white max-w-4xl w-full rounded-sm shadow-2xl overflow-hidden relative border border-arch-100 dark:border-arch-800 transition-colors">
+    <!-- CASE STUDY MODAL (Designed like Presentation Board) -->
+    <div id="project-modal" class="fixed inset-0 z-[100] hidden overflow-y-auto bg-black/95 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-arch-50 dark:bg-arch-900 text-arch-900 dark:text-white max-w-5xl w-full rounded-sm shadow-2xl overflow-hidden relative border border-arch-200 dark:border-arch-800 transition-colors">
             
             <!-- Close Button -->
-            <button onclick="closeProjectModal()" class="absolute top-4 right-4 z-50 w-10 h-10 rounded-full bg-black/50 hover:bg-black/80 text-white flex items-center justify-center transition-all">
+            <button onclick="closeProjectModal()" class="absolute top-6 right-6 z-50 w-12 h-12 rounded-full bg-black/40 hover:bg-black/80 text-white flex items-center justify-center transition-all">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
 
-            <div class="grid grid-cols-1 md:grid-cols-2">
-                <!-- Project Visual (SVG representation of details) -->
-                <div id="modal-visual" class="relative bg-neutral-200 dark:bg-neutral-800 aspect-[4/3] md:aspect-auto md:h-full flex items-center justify-center overflow-hidden">
-                    <!-- Dynamic SVG content will be loaded via JS -->
+            <div class="grid grid-cols-1 md:grid-cols-12">
+                <!-- Project Visual (SVG) -->
+                <div id="modal-visual" class="md:col-span-7 relative bg-neutral-950 aspect-[4/3] md:aspect-auto md:min-h-[500px] flex items-center justify-center overflow-hidden border-r border-arch-200/50 dark:border-arch-800/50">
+                    <!-- Dynamic SVG content will load here -->
                 </div>
 
-                <!-- Project Content Details -->
-                <div class="p-8 md:p-10 flex flex-col justify-between space-y-6">
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center">
-                            <span id="modal-tag" class="text-[10px] font-bold tracking-widest uppercase text-neutral-400">TAG</span>
-                            <span id="modal-year" class="text-xs font-mono text-neutral-400">2024</span>
+                <!-- Project Details -->
+                <div class="md:col-span-5 p-8 md:p-12 flex flex-col justify-between space-y-8">
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-center border-b border-arch-200/50 dark:border-arch-800 pb-4">
+                            <span id="modal-tag" class="text-[9px] font-mono tracking-widest uppercase text-bronze-default font-bold">TAG</span>
+                            <span id="modal-year" class="text-xs font-mono text-neutral-400">2026</span>
                         </div>
-                        <h3 id="modal-title" class="text-2xl font-black tracking-tight">프로젝트 제목</h3>
-                        <div class="h-[1px] w-full bg-arch-100 dark:bg-arch-800"></div>
+                        <h3 id="modal-title" class="editorial-font text-3xl font-black tracking-tight text-arch-900 dark:text-white">프로젝트 제목</h3>
                         
-                        <div class="grid grid-cols-2 gap-4 text-xs font-light">
-                            <div>
-                                <h4 class="font-bold text-neutral-400">대지 위치</h4>
-                                <p id="modal-location">위치정보 로딩중</p>
+                        <div class="grid grid-cols-2 gap-6 text-xs font-light">
+                            <div class="space-y-1">
+                                <h4 class="font-bold text-neutral-400 text-[9px] font-mono uppercase tracking-widest">대지 위치</h4>
+                                <p id="modal-location" class="text-arch-700 dark:text-neutral-300">위치정보 로딩중</p>
                             </div>
-                            <div>
-                                <h4 class="font-bold text-neutral-400">연면적 / 규모</h4>
-                                <p id="modal-scale">규모 로딩중</p>
+                            <div class="space-y-1">
+                                <h4 class="font-bold text-neutral-400 text-[9px] font-mono uppercase tracking-widest">연면적 / 규모</h4>
+                                <p id="modal-scale" class="text-arch-700 dark:text-neutral-300">규모 로딩중</p>
                             </div>
                         </div>
 
-                        <p id="modal-desc" class="text-sm text-arch-500 dark:text-arch-400 leading-relaxed font-light">
+                        <p id="modal-desc" class="text-xs text-arch-500 dark:text-arch-400 leading-relaxed font-light">
                             설계 설명이 이곳에 자세히 노출됩니다.
                         </p>
                     </div>
 
-                    <div class="pt-4">
-                        <button onclick="closeProjectModal()" class="w-full py-3 border border-arch-900 dark:border-white hover:bg-arch-900 hover:text-white dark:hover:bg-white dark:hover:text-arch-900 text-xs font-bold tracking-widest uppercase transition-all rounded-sm">
+                    <div class="pt-6">
+                        <button onclick="closeProjectModal()" class="w-full py-4 border border-arch-900 dark:border-white hover:bg-arch-900 hover:text-white dark:hover:bg-white dark:hover:text-arch-900 text-[10px] font-bold tracking-[0.25em] uppercase transition-all duration-300 rounded-sm">
                             CLOSE PREVIEW
                         </button>
                     </div>
@@ -759,12 +900,11 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // Theme Management (Dark Mode)
+        // Theme Management
         const themeToggle = document.getElementById('theme-toggle');
         const themeIcon = document.getElementById('theme-icon');
         const htmlEl = document.documentElement;
 
-        // Check local memory for theme preference
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             htmlEl.classList.add('dark');
             themeIcon.className = 'fa-solid fa-sun text-yellow-400';
@@ -785,7 +925,7 @@
             }
         });
 
-        // Mobile Menu Toggle
+        // Mobile Menu Trigger
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         const mobileLinks = document.querySelectorAll('.mobile-link');
@@ -800,7 +940,7 @@
             });
         });
 
-        // Hero Carousel Logic
+        // Hero Carousel
         let currentSlideIndex = 0;
         const slides = document.querySelectorAll('.carousel-item');
         
@@ -826,23 +966,19 @@
             showSlide(currentSlideIndex);
         }
 
-        // Auto-advance hero slides every 6 seconds
-        setInterval(nextSlide, 6000);
+        setInterval(nextSlide, 7000); // 7 seconds
 
-
-        // Portfolio Filters Logic
+        // Portfolio Filters
         function filterProjects(category) {
-            // Update filter buttons appearance
             const buttons = document.querySelectorAll('.project-filter-btn');
             buttons.forEach(btn => {
-                if (btn.innerText.toLowerCase() === category || (category === 'all' && btn.innerText === 'ALL')) {
-                    btn.className = "project-filter-btn px-4 py-2 text-arch-900 dark:text-white border-b-2 border-arch-900 dark:border-white transition-all";
+                if (btn.innerText.toLowerCase().includes(category) || (category === 'all' && btn.innerText.includes('ALL'))) {
+                    btn.className = "project-filter-btn px-2 py-2 text-arch-900 dark:text-white border-b-2 border-arch-900 dark:border-white transition-all duration-300";
                 } else {
-                    btn.className = "project-filter-btn px-4 py-2 text-arch-400 hover:text-arch-950 dark:hover:text-white transition-all";
+                    btn.className = "project-filter-btn px-2 py-2 text-arch-400 hover:text-arch-900 dark:hover:text-white transition-all duration-300";
                 }
             });
 
-            // Filter cards
             const cards = document.querySelectorAll('.project-card');
             cards.forEach(card => {
                 const cardCategory = card.getAttribute('data-category');
@@ -854,8 +990,7 @@
             });
         }
 
-
-        // Detailed Project Data Store (Mock Content)
+        // Project Database (Premium Detail Upgrades)
         const projectData = {
             1: {
                 title: "빛의 집 (The Light House)",
@@ -865,11 +1000,11 @@
                 scale: "185㎡ / 지상 2층 단독주택",
                 desc: "남쪽에서 유입되는 가파른 산자락의 햇빛을 깊숙하게 끌어들이기 위해 지붕의 비대칭 경사각을 정밀하게 산출했습니다. 노출콘크리트의 본연의 매트한 질감과 차가움을 따뜻한 오크 우드로 보완하고 전면에 긴 직사각형 수공간을 설치하여 사색이 가능한 완벽한 안식처를 탄생시켰습니다.",
                 svg: `<svg class="w-full h-full object-cover" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="400" height="300" fill="#2d3748"/>
-                        <path d="M50 250 L200 80 L350 250 Z" fill="#4a5568"/>
-                        <rect x="150" y="180" width="100" height="70" fill="#718096"/>
-                        <line x1="200" y1="80" x2="200" y2="250" stroke="#cbd5e0" stroke-width="2" stroke-dasharray="4 4"/>
-                        <circle cx="200" cy="120" r="15" fill="#f6ad55" opacity="0.6"/>
+                        <rect width="400" height="300" fill="#1e1e1a"/>
+                        <path d="M50 250 L200 80 L350 250 Z" fill="#2d2d26"/>
+                        <rect x="150" y="180" width="100" height="70" fill="#c5bfae" opacity="0.3"/>
+                        <line x1="200" y1="80" x2="200" y2="250" stroke="#b4a284" stroke-width="1" stroke-dasharray="3 3"/>
+                        <circle cx="200" cy="120" r="15" fill="#b4a284" opacity="0.6"/>
                       </svg>`
             },
             2: {
@@ -880,11 +1015,10 @@
                 scale: "450㎡ / 지하 1층, 지상 4층 근생",
                 desc: "골목길이 좁고 유동 인구가 많은 대지 조건의 한계를 극복하고자 1층을 완전히 비워낸 필로티 광장 구조로 기획했습니다. 상층부의 무거운 메스가 공중에 떠 있는 듯한 플로팅 캔틸레버 공법을 채택하여 보행자에게 시각적 개방감을 부여하고 세련된 미장센을 도심 속에 제시합니다.",
                 svg: `<svg class="w-full h-full object-cover" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="400" height="300" fill="#1a202c"/>
-                        <rect x="50" y="80" width="300" height="170" fill="#2d3748" rx="5"/>
-                        <rect x="90" y="120" width="70" height="130" fill="#4a5568"/>
-                        <rect x="240" y="120" width="70" height="130" fill="#4a5568"/>
-                        <line x1="50" y1="210" x2="350" y2="210" stroke="#718096" stroke-width="2"/>
+                        <rect width="400" height="300" fill="#111111"/>
+                        <rect x="50" y="80" width="300" height="170" fill="#222" rx="2" stroke="#444"/>
+                        <rect x="90" y="120" width="70" height="130" fill="#333"/>
+                        <rect x="240" y="120" width="70" height="130" fill="#b4a284" opacity="0.4"/>
                       </svg>`
             },
             3: {
@@ -895,9 +1029,9 @@
                 scale: "3,200㎡ / 지상 3층 공공도서관",
                 desc: "도심 속 하나의 거대한 거석(Monolith)처럼 설계된 이 공공 프로젝트는 내부를 가르는 대형 원형 보이드(Void)가 특징입니다. 보이드를 타고 흐르는 유려한 나선형 계단을 따라 배치된 서가는 책과 사람, 그리고 공간의 소통을 주도합니다. 제로에너지 인증 패시브 하우스 설계를 충족합니다.",
                 svg: `<svg class="w-full h-full object-cover" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="400" height="300" fill="#2d3748"/>
-                        <path d="M50 250 Q200 50 350 250" stroke="#cbd5e0" stroke-width="8" fill="none"/>
-                        <circle cx="200" cy="150" r="40" fill="#718096"/>
+                        <rect width="400" height="300" fill="#15171a"/>
+                        <path d="M50 250 Q200 50 350 250" stroke="#b4a284" stroke-width="4" fill="none" opacity="0.6"/>
+                        <circle cx="200" cy="150" r="50" fill="#2d3748" opacity="0.3"/>
                       </svg>`
             },
             4: {
@@ -908,9 +1042,9 @@
                 scale: "210㎡ / 지상 1층 단독주택",
                 desc: "숲의 울창한 수림과 경사지를 그대로 존중하며 설계된 친자연적인 주거 환경 프로젝트입니다. 대지를 평평하게 깎지 않고 자연 그대로의 고저차에 수평 매스들을 중첩하여, 주택 안 모든 방에서 서로 다른 숲의 계절적 면모를 시각적 차경(借景)으로 프레이밍할 수 있도록 정교한 창문 계획을 수립했습니다.",
                 svg: `<svg class="w-full h-full object-cover" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="400" height="300" fill="#4a5568"/>
-                        <rect x="80" y="80" width="240" height="150" fill="#2d3748"/>
-                        <line x1="80" y1="150" x2="320" y2="150" stroke="#e2e8f0" stroke-width="1"/>
+                        <rect width="400" height="300" fill="#1d1e1c"/>
+                        <rect x="80" y="80" width="240" height="150" fill="#292a27"/>
+                        <line x1="80" y1="150" x2="320" y2="150" stroke="#b4a284" stroke-width="0.5"/>
                       </svg>`
             },
             5: {
@@ -921,9 +1055,9 @@
                 scale: "1,150㎡ / 지상 6층 근린생활시설",
                 desc: "해풍의 물결과 해변가의 파동을 건축적 형태 언어로 변환하여, 전면에 파도가 넘실거리는 디자인 스킨을 도입한 상업 랜드마크 프로젝트입니다. 테라스를 단층마다 유려하게 회전시켜 각 층마다 고유한 해변 조망을 가질 수 있게 설계된 복합 문화 공간 및 카페형 빌딩입니다.",
                 svg: `<svg class="w-full h-full object-cover" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="400" height="300" fill="#1a1a1a"/>
-                        <rect x="100" y="50" width="80" height="200" fill="#333333"/>
-                        <rect x="220" y="100" width="80" height="150" fill="#4d4d4d"/>
+                        <rect width="400" height="300" fill="#111"/>
+                        <rect x="100" y="50" width="80" height="200" fill="#222" stroke="#333"/>
+                        <rect x="220" y="100" width="80" height="150" fill="#b4a284" opacity="0.3"/>
                       </svg>`
             },
             6: {
@@ -934,8 +1068,8 @@
                 scale: "85㎡ / 임시 가설 파빌리온",
                 desc: "회색빛 고층 빌딩이 가득한 여의도의 교차로 한편에서 바쁜 현대인들이 도심 속 틈새 자연을 발견하고 가볍게 쉬어갈 수 있도록 철제 와이어와 반사 거울 아크릴 패널을 결합해 설치한 한시적인 공간 실험 파빌리온입니다. 바람의 방향과 도심 소음 강도에 반응하여 살랑거리는 동적 설계를 차용했습니다.",
                 svg: `<svg class="w-full h-full object-cover" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="400" height="300" fill="#2d3748"/>
-                        <circle cx="200" cy="150" r="60" fill="#4a5568" stroke="#cbd5e0" stroke-width="2"/>
+                        <rect width="400" height="300" fill="#141416"/>
+                        <circle cx="200" cy="150" r="60" fill="#b4a284" opacity="0.3" stroke="#b4a284" stroke-width="1"/>
                       </svg>`
             }
         };
@@ -954,7 +1088,6 @@
             document.getElementById('modal-desc').innerText = data.desc;
             document.getElementById('modal-visual').innerHTML = data.svg;
 
-            // Show modal and block page scrolling
             modal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
@@ -964,30 +1097,24 @@
             document.body.style.overflow = '';
         }
 
-        // Close modal when clicking outside content box
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
                 closeProjectModal();
             }
         });
 
-
-        // Handle Contact Form Submission with Custom Feedback UI
+        // Contact Handle
         function handleContactSubmit(event) {
             event.preventDefault();
-
             const name = document.getElementById('client-name').value;
             const feedbackBox = document.getElementById('form-feedback');
 
-            // Simulate form submission success
             feedbackBox.classList.remove('hidden', 'bg-red-500/10', 'text-red-500', 'bg-emerald-500/10', 'text-emerald-500');
             feedbackBox.classList.add('bg-emerald-500/10', 'text-emerald-500', 'block');
-            feedbackBox.innerText = `감사합니다, ${name}님! 프로젝트 의뢰 내용이 성공적으로 임시 접수되었습니다. 빠른 시일 내에 이메일로 연락드리겠습니다.`;
+            feedbackBox.innerText = `감사합니다, ${name}님! 프로젝트 정보가 KANG BYEONGHUN 아키텍츠에 무사히 공유되었습니다. 정밀 분석 후 곧 연락드리겠습니다.`;
 
-            // Reset Form Fields
             document.getElementById('contact-form').reset();
 
-            // Auto-hide feedback after 6 seconds
             setTimeout(() => {
                 feedbackBox.classList.add('hidden');
             }, 6000);
